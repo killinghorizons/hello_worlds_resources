@@ -1,0 +1,2107 @@
+[
+  {
+    "name": "0815",
+    "code": [
+      "<:48:x<:65:=<:6C:$=$=$$~<:03:+\n$~<:ffffffffffffffb1:+$<:77:~$\n~<:fffffffffffff8:x+$~<:03:+$~\n<:06:x-$x<:0e:x-$=x<:43:x-$"
+    ]
+  },
+  { "name": "11l", "code": ["print(\u2018Hello world!\u2019)"] },
+  {
+    "name": "360 Assembly",
+    "code": [
+      "HELLO    CSECT \n         USING HELLO,15\n         LA    1,MSGAREA     Point Register 1 to message area\n         SVC   35            Invoke SVC 35 (Write to Operator) \n         BR    14            Return\nMSGAREA  EQU   *             Message Area\n         DC    AL2(19)       Total area length = 19 (Prefix length:4 + Data Length:15) \n         DC    XL2'00'       2 bytes binary of zeros\n         DC    C'Hello world!'  Text to be written to system console\n         END",
+      "WTO   'Hello world!'\n         BR    14            Return\n         END"
+    ]
+  },
+  {
+    "name": "IBM Z HL/ASM",
+    "code": [
+      "PRINT ON,GEN,DATA\nHELLO   CSECT\nHELLO   RMODE ANY\nHELLO   AMODE 31\n*\n* Prolog\n*\n        SAVE (14,12)\n        BASR R12,0\n        USING *,R12\n        STORAGE OBTAIN,LENGTH=DYNL,ADDR=(R11)\n        USING DYNAREA,R11\n\n        LA R2,DSA\n        ST R2,8(,R13)\n        ST R13,DSA+4\n        LR R13,R2\n*\n* Body\n* Write Hello World to STDOUT\n*\n\n*\n* Store values into parameter list\n*\n        MVC REC(HWL),HW\n        LA  R1,REC\n        ST  R1,RECA\n        LA  R1,HWL\n        ST  R1,RECL\n        L   R1,STDOUT\n        ST  R1,FD\n        L   R1,BPXALET\n        ST  R1,ALET\n\n        CALL  BPX1WRT,(FD,                                             x\n               RECA,                                                   x\n               ALET,                                                   x\n               RECL,                                                   x\n               RV,                                                     x\n               RC,                                                     x\n               RN),MF=(E,BPXWRTD)\n\n        L   R8,RV\n        L   R9,RC\n        L   R10,RN\n*\n* Epilog\n*\n        L   R13,DSA+4\n        STORAGE RELEASE,LENGTH=DYNL,ADDR=(R11)\n        RETURN (14,12),RC=0\n\n*\n* Statics, Dynamic Storage, Equates follows\n*\n* Naming convention:\n* Suffixes:\n*  L\u00a0: length\n*  S\u00a0: static\n*  D\u00a0: dynamic\n*  A\u00a0: address\n\n        LTORG\n*\n* Statics (constants)\n*\nSTDIN   DC F'0'\nSTDOUT  DC F'1'\nSTDERR  DC F'2'\nBPXALET DC F'0'\nBPX1WRT DC V(BPX1WRT)\n\nBPXWRTS CALL  ,(0,0,0,0,0,0,0),MF=L\nBPXWRTL EQU *-BPXWRTS\n\nHW      DC C'Hello World'\nNEWLINE DC X'15'\nHWL     EQU *-HW\n\n*\n* Dynamic (storage obtain'ed) area\n*\nDYNAREA DSECT\n*\n* Dynamic Save Area regs always first\n*\nDSA   DS 18F\n\n*\n* Working storage\n*\nFD      DS  F\n\nRECSIZE EQU RECEND-*\nREC     DS CL80\nRECEND  EQU *\nRECA    DS  A\nBPXWRTD DS  CL(BPXWRTL)\nALET    DS  F\nRECL    DS  F\nRV      DS  F\nRC      DS  F\nRN      DS  F\n\nDYNL EQU *-DYNAREA\n*\n*\n* End of working storage\n*\n\n*\n* Equates\n*\nR0      EQU 0\nR1      EQU 1\nR2      EQU 2\nR3      EQU 3\nR4      EQU 4\nR5      EQU 5\nR6      EQU 6\nR7      EQU 7\nR8      EQU 8\nR9      EQU 9\nR10     EQU 10\nR11     EQU 11\nR12     EQU 12\nR13     EQU 13\nR14     EQU 14\nR15     EQU 15\n        END"
+    ]
+  },
+  {
+    "name": "IBM Z HL/ASM",
+    "code": [
+      "PRINT ON,GEN,DATA\nHELLO   CSECT\nHELLO   RMODE ANY\nHELLO   AMODE 31\n*\n* Prolog\n*\n        SAVE (14,12)\n        BASR R12,0\n        USING *,R12\n        STORAGE OBTAIN,LENGTH=DYNL,ADDR=(R11)\n        USING DYNAREA,R11\n\n        LA R2,DSA\n        ST R2,8(,R13)\n        ST R13,DSA+4\n        LR R13,R2\n*\n* Body\n* Write Hello World to STDOUT\n*\n\n*\n* Store values into parameter list\n*\n        MVC REC(HWL),HW\n        LA  R1,REC\n        ST  R1,RECA\n        LA  R1,HWL\n        ST  R1,RECL\n        L   R1,STDOUT\n        ST  R1,FD\n        L   R1,BPXALET\n        ST  R1,ALET\n\n        CALL  BPX1WRT,(FD,                                             x\n               RECA,                                                   x\n               ALET,                                                   x\n               RECL,                                                   x\n               RV,                                                     x\n               RC,                                                     x\n               RN),MF=(E,BPXWRTD)\n\n        L   R8,RV\n        L   R9,RC\n        L   R10,RN\n*\n* Epilog\n*\n        L   R13,DSA+4\n        STORAGE RELEASE,LENGTH=DYNL,ADDR=(R11)\n        RETURN (14,12),RC=0\n\n*\n* Statics, Dynamic Storage, Equates follows\n*\n* Naming convention:\n* Suffixes:\n*  L\u00a0: length\n*  S\u00a0: static\n*  D\u00a0: dynamic\n*  A\u00a0: address\n\n        LTORG\n*\n* Statics (constants)\n*\nSTDIN   DC F'0'\nSTDOUT  DC F'1'\nSTDERR  DC F'2'\nBPXALET DC F'0'\nBPX1WRT DC V(BPX1WRT)\n\nBPXWRTS CALL  ,(0,0,0,0,0,0,0),MF=L\nBPXWRTL EQU *-BPXWRTS\n\nHW      DC C'Hello World'\nNEWLINE DC X'15'\nHWL     EQU *-HW\n\n*\n* Dynamic (storage obtain'ed) area\n*\nDYNAREA DSECT\n*\n* Dynamic Save Area regs always first\n*\nDSA   DS 18F\n\n*\n* Working storage\n*\nFD      DS  F\n\nRECSIZE EQU RECEND-*\nREC     DS CL80\nRECEND  EQU *\nRECA    DS  A\nBPXWRTD DS  CL(BPXWRTL)\nALET    DS  F\nRECL    DS  F\nRV      DS  F\nRC      DS  F\nRN      DS  F\n\nDYNL EQU *-DYNAREA\n*\n*\n* End of working storage\n*\n\n*\n* Equates\n*\nR0      EQU 0\nR1      EQU 1\nR2      EQU 2\nR3      EQU 3\nR4      EQU 4\nR5      EQU 5\nR6      EQU 6\nR7      EQU 7\nR8      EQU 8\nR9      EQU 9\nR10     EQU 10\nR11     EQU 11\nR12     EQU 12\nR13     EQU 13\nR14     EQU 14\nR15     EQU 15\n        END"
+    ]
+  },
+  { "name": "4DOS Batch", "code": ["echo Hello world!"] },
+  { "name": "4ME", "code": ["P:hw\nout{Hello world!}", "echo{Hello world!}"] },
+  {
+    "name": "6502 Assembly",
+    "code": [
+      "; goodbyeworld.s for C= 8-bit machines, ca65 assembler format.\n; String printing limited to strings of 256 characters or less.\n\na_cr\t= $0d\t\t; Carriage return.\nbsout\t= $ffd2\t\t; C64 KERNEL ROM, output a character to current device.\n\t\t\t; use $fded for Apple 2, $ffe3 (ascii) or $ffee (raw) for BBC.\n\t.code\n\n\tldx #0\t\t; Starting index 0 in X register.\nprintnext:\n\tlda text,x\t; Get character from string.\n\tbeq done\t; If we read a 0 we're done.\n\tjsr bsout\t; Output character. \n\tinx\t\t; Increment index to next character.\n\tbne printnext\t; Repeat if index doesn't overflow to 0.\ndone:\n\trts\t\t; Return from subroutine.\n\n\t.rodata\n\ntext:\n\t.byte\t\"Hello world!\", a_cr, 0"
+    ]
+  },
+  {
+    "name": "6800 Assembly",
+    "code": [
+      ".cr  6800\n        .tf  gbye6800.obj,AP1\n        .lf  gbye6800\n;=====================================================;\n;        Hello world! for the Motorola 6800       \u00a0;\n;                 by barrym 2013-03-17               \u00a0;\n;-----------------------------------------------------;\n; Prints the message \"Hello world!\" to an ascii   \u00a0;\n;   terminal (console) connected to a 1970s vintage  \u00a0;\n;   SWTPC 6800 system, which is the target device for\u00a0;\n;   this assembly.                                   \u00a0;\n; Many thanks to:                                    \u00a0;\n;   swtpc.com for hosting Michael Holley's documents!\u00a0;\n;   sbprojects.com for a very nice assembler!        \u00a0;\n;   swtpcemu.com for a very capable emulator!        \u00a0;\n; reg x is the string pointer                        \u00a0;\n; reg a holds the ascii char to be output            \u00a0;\n;-----------------------------------------------------;\nouteee   =   $e1d1      ;ROM: console putchar routine\n        .or  $0f00\n;-----------------------------------------------------;\nmain    ldx  #string    ;Point to the string\n        bra  puts      \u00a0;  and print it\nouts    jsr  outeee     ;Emit a as ascii\n        inx             ;Advance the string pointer\nputs    ldaa ,x         ;Load a string character\n        bne  outs       ;Print it if non-null\n        swi            \u00a0;  else return to the monitor\n;=====================================================;\nstring  .as  \"Hello world!\",#13,#10,#0\n        .en"
+    ]
+  },
+  {
+    "name": "8080 Assembly",
+    "code": [
+      "; This is Hello World, written in 8080 assembly to run under CP/M\n\t; As you can see, it is similar to the 8086, and CP/M is very\n\t; similar to DOS in the way it is called.\n\torg\t100h\t; CP/M .COM entry point is 100h - like DOS\n\tmvi\tc,9\t; C holds the syscall, 9 = print string - like DOS\n\tlxi\td,msg\t; DE holds a pointer to the string\n\tjmp\t5\t; CP/M calls are accessed through the jump at 05h\n\t; Normally you'd CALL it, but since you'd end the program by RETurning,\n\t; JMP saves a byte (if you've only got 64k of address space you want to\n\t; save bytes). \nmsg:\tdb\t'Hello world!$'"
+    ]
+  },
+  {
+    "name": "8086 Assembly",
+    "code": [
+      "DOSSEG\n.MODEL TINY\n.DATA\nTXT DB \"Hello world!$\"\n.CODE\nSTART:\n\tMOV ax, @DATA\n\tMOV ds, ax\n\t\n\tMOV ah, 09h\t\t; prepare output function\n\tMOV dx, OFFSET TXT\t; set offset\n\tINT 21h\t\t\t; output string TXT\n\t\n\tMOV AX, 4C00h \t\t; go back to DOS\n\tINT 21h\nEND START",
+      "org 100h\n\n  mov dx, msg\n  mov ah, 9\n  int 21h\n\n  mov ax, 4c00h\n  int 21h\n\nmsg:\n  db \"Hello world!$\""
+    ]
+  },
+  { "name": "8th", "code": ["\"Hello world!\\n\" . bye"] },
+  {
+    "name": "AArch64 Assembly",
+    "code": [
+      ".equ STDOUT, 1\n.equ SVC_WRITE, 64\n.equ SVC_EXIT, 93\n\n.text\n.global _start\n\n_start:\n\tstp x29, x30, [sp, -16]!\n\tmov x0, #STDOUT\n\tldr x1, =msg\n\tmov x2, 13\n\tmov x8, #SVC_WRITE\n\tmov x29, sp\n\tsvc #0 // write(stdout, msg, 13);\n\tldp x29, x30, [sp], 16\n\tmov x0, #0\n\tmov x8, #SVC_EXIT\n\tsvc #0 // exit(0);\n\nmsg:\t.ascii \"Hello World!\\n\"\n.align 4",
+      ".global _start\n\n.text\n_start:\n    mov x8, #64             //64 is write\n    mov x0, #1              //1 is stdout\n    adr x1, msg             //mov address of msg into x1\n    mov x2, #(msgend - msg) //msgend minus msg is the length of message\n    svc #0                  //system call\n    mov x8, #93             //93 is exit\n    mov x0, xzr             //0 is the exit code. xzr is the zero register\n    svc #0                  //system call\n\nmsg:\n    .ascii \"Hello world!\\n\"\nmsgend:",
+      ".global _start\n.text\n_start:\n    adr  x0, msg       // load x0 with address of message\n    bl   writez        // call the function that writes null-terminated string to stdout\n    mov  x8, #93       // 93 is syscall exit\n    mov  x0, xzr       // exit code = 0. Exit normal.\n    svc  #0            // syscall\n                       // If using as a function in C declare it as\nwritez:                // extern long writez(char *str);\n    mov  x1, x0        // address of str needs to be in x1 for syscall\n    sub  x0, x0, #1    // decrement x0, because the next statement increments it.\n 0: ldrb w2, [x0, #1]! // increment x0, load byte value at x0 in w2\n    cbnz w2, 0b        // if w2 is not zero jump back to 0: label\n    sub  x2, x0, x1    // subtract x1 from x0, load into x2. length of str\n    mov  x0, #1        // mov into x0 1. stdout\n    mov  x8, #64       // mov into x8 64. write\n    svc  #0            // syscall\n    ret                // return from function.\n                       // return value (x0) is number of characters written.\nmsg: .asciz \"Hello world!\\n\" // .asciz means null-terminated string. Assembler adds the 0"
+    ]
+  },
+  {
+    "name": "ABAP",
+    "code": ["REPORT zgoodbyeworld.\n  WRITE 'Hello world!'."]
+  },
+  { "name": "ACL2", "code": ["(cw \"Hello world!~%\")"] },
+  { "name": "Acornsoft Lisp", "code": ["(printc 'Hello! world!!)"] },
+  {
+    "name": "Action!",
+    "code": ["Proc Main()\n Print(\"Hello world!\")\nReturn"]
+  },
+  { "name": "ActionScript", "code": ["trace(\"Hello world!\");"] },
+  {
+    "name": "Ada",
+    "code": [
+      "with Ada.Text_IO; use Ada.Text_IO;\nprocedure Main is\nbegin\n  Put_Line (\"Hello world!\");\nend Main;"
+    ]
+  },
+  {
+    "name": "Agda",
+    "code": [
+      "module HelloWorld where\n\nopen import Agda.Builtin.IO using (IO)\nopen import Agda.Builtin.Unit renaming (\u22a4 to Unit)\nopen import Agda.Builtin.String using (String)\n\npostulate putStrLn : String -> IO Unit\n{-# FOREIGN GHC import qualified Data.Text as T #-}\n{-# COMPILE GHC putStrLn = putStrLn . T.unpack #-}\n\nmain : IO Unit\nmain = putStrLn \"Hello world!\""
+    ]
+  },
+  { "name": "Agena", "code": ["print( \"Hello world!\" )"] },
+  {
+    "name": "Aime",
+    "code": [
+      "o_text(\"Hello world!\\n\");",
+      "integer\nmain(void)\n{\n    o_text(\"Hello world!\\n\");\n\n    return 0;\n}"
+    ]
+  },
+  { "name": "Algae", "code": ["printf(\"Hello world!\\n\");"] },
+  {
+    "name": "ALGOL 60",
+    "code": [
+      "'BEGIN'\n    OUTSTRING(1,'('Hello world!')');\n    SYSACT(1,14,1)\n'END'"
+    ]
+  },
+  { "name": "ALGOL 68", "code": ["main: (\n  printf($\"Hello world!\"l$)\n)"] },
+  { "name": "ALGOL W", "code": ["begin\n    write( \"Hello world!\" )\nend."] },
+  { "name": "ALGOL-M", "code": ["BEGIN\n    WRITE( \"Hello world!\" );\nEND"] },
+  { "name": "Alore", "code": ["Print('Hello world!')"] },
+  {
+    "name": "Amazing Hopper",
+    "code": [
+      "main:\n   {\"Hello world!\\n\"}print\nexit(0)",
+      "execute with:  hopper helloworld.com",
+      "#include <hopper.h>\nmain:\n   exit(\"Hello world!\\n\")",
+      "execute with:  hopper helloworld.com -d",
+      "main:\n  {\"Hello world!\\n\"}return",
+      "execute with:  hopper helloworld.com -d"
+    ]
+  },
+  { "name": "AmbientTalk", "code": ["system.println(\"Hello world!\")"] },
+  {
+    "name": "AmigaE",
+    "code": ["PROC main()\n  WriteF('Hello world!\\n')\nENDPROC"]
+  },
+  {
+    "name": "AngelScript",
+    "code": ["void main() { print(\"Hello world\\n\"); }"]
+  },
+  { "name": "AntLang", "code": ["echo[\"Hello, World!\"]"] },
+  {
+    "name": "Anyways",
+    "code": [
+      "There was a guy called Hello World\n\"Ow!\" it said.\nThat's all folks!"
+    ]
+  },
+  { "name": "APL", "code": ["'Hello world!'"] },
+  {
+    "name": "AppleScript",
+    "code": ["\"Hello world!\"", "log \"Hello world!\""]
+  },
+  { "name": "Applesoft BASIC", "code": ["PRINT \"Hello world!\""] },
+  { "name": "Apricot", "code": ["(puts \"Hello world!\")"] },
+  { "name": "Arc", "code": ["(prn \"Hello world!\")"] },
+  { "name": "Arendelle", "code": ["\"Hello world!\""] },
+  { "name": "ArkScript", "code": ["(print \"Hello world!\")"] },
+  { "name": "Argile", "code": ["use std\nprint \"Hello world!\""] },
+  {
+    "name": "ARM Assembly",
+    "code": [
+      ".global main\n\nmessage:\n    .asciz \"Hello world!\\n\"\n    .align 4\n\nmain:\n    ldr r0, =message\n    bl printf\n\n    mov r7, #1\n    swi 0",
+      "Developed on an Acorn A5000 with RISC OS 3.10 (30 Apr 1992)\n Using the assembler contained in ARM BBC BASIC V version 1.05 (c) Acorn 1989\n\nThe Acorn A5000 is the individual computer used to develop the code,\nthe code is applicable to all the Acorn Risc Machines (ARM)\nproduced by Acorn and the StrongARM produced by digital.\n\n In the BBC BASIC part of the program I have included:\n    OS_WriteC  = &00\n    OS_WriteO  = &02\n    OS_NewLine = &03\n this is so I can write SWI OS_WriteC etc instead of SWI &0 to make the assembler more legible\n\n (a) method1 - output the text character by character until the terminating null (0) is seen\n\n     .method1_vn00\n           ADR     R8  , method1_string    \\ the ARM does not have an ADR instruction\n                                           \\ the assembler will work out how far the data item\n                                           \\ is from here (in this case a +ve relative offset)\n                                           \\ and so will produce an ADD R8 , PC, offset to method1_string\n                                           \\ a magic trick by the ARM assembler\n\n     .method1_loop\n           LDRB     R0  , [R8], #1         \\ load the byte found at address in R8 into R0\n                                           \\ then post increment the address in R8 in preparation\n                                           \\ for the next byte (the #1 is my choice for the increment)\n           CMP      R0  , #0               \\ has the terminating null (0) been reached\n           SWINE    OS_WriteC              \\ when not the null output the character in R0\n                                           \\ (every opportunity to have a SWINE in your program should be taken)\n           BNE      method1_loop           \\ go around the loop for the next character if not reached the null\n\n           SWI      OS_NewLine             \\ up to you if you want a newline\n\n           MOVS     PC  , R14              \\ return\n                                           \\ when I call an operating system function it no longer operates\n                                           \\ in 'user mode' and it has its own R14, and anyway the operating system\n                                           \\ is too polite to write rubbish into this return address\n\n\n     .method1_string\n           EQUS \"Hello world!\"             \\ the string to be output\n           EQUB &00                        \\ a terminating null (0)\n           ALIGN                           \\ tell the assembler to ensure that the next item is on a word boundary\n\n\n\n\n (b) method2 - get the supplied operating system to do the work\n\n     .method2_vn00\n           ADR     R0   , method2_string   \\ the ARM does not have an ADR instruction\n                                           \\ the assembler will work out how far the data item\n                                           \\ is from here (in this case a +ve relative offset)\n                                           \\ and so will produce an ADD R0 , PC, offset to method2_string\n                                           \\ a magic trick by the ARM assembler\n\n           SWI      OS_WriteO              \\ R0 = pointer to null-terminated string to write\n\n           SWI      OS_NewLine             \\ up to you if you want a newline\n\n           MOVS    PC   , R14              \\ return\n \n     .method2_string\n           EQUS \"hELLO WORLD!\"             \\ the string to be output\n           EQUB &00                        \\ a terminating null (0)\n           ALIGN                           \\ tell the assembler to ensure that the next item is on a word boundary"
+    ]
+  },
+  {
+    "name": "ArnoldC",
+    "code": [
+      "IT'S SHOWTIME\nTALK TO THE HAND \"Hello world!\"\nYOU HAVE BEEN TERMINATED"
+    ]
+  },
+  { "name": "Arturo", "code": ["print \"Hello world!\"", "Hello world!"] },
+  { "name": "AsciiDots", "code": [".-$'Hello, World!'"] },
+  { "name": "Astro", "code": ["print \"Hello world!\""] },
+  { "name": "Asymptote", "code": ["write('Hello world!');"] },
+  { "name": "Atari BASIC", "code": ["10 PRINT \"Hello World\""] },
+  { "name": "ATS", "code": ["implement main0 () = print \"Hello world!\\n\""] },
+  {
+    "name": "AutoHotkey",
+    "code": [
+      "DllCall(\"AllocConsole\")\nFileAppend, Goodbye`, World!, CONOUT$\nFileReadLine, _, CONIN$, 1",
+      "DllCall(\"AttachConsole\", \"int\", -1)\nFileAppend, Goodbye`, World!, CONOUT$",
+      "SendInput Hello world!{!}"
+    ]
+  },
+  { "name": "AutoIt", "code": ["ConsoleWrite(\"Hello world!\" & @CRLF)"] },
+  { "name": "AutoLISP", "code": ["(printc \"Hello World!\")"] },
+  { "name": "Avail", "code": ["Print: \"Hello World!\";"] },
+  {
+    "name": "AWK",
+    "code": [
+      "BEGIN{print \"Hello world!\"}",
+      "END {\n     print \"Hello world!\"\n    }",
+      "//  { \n    print \"Hello world!\" \n    exit\n    }",
+      "//  { \n    print \"Hello world!\" \n    }",
+      "//"
+    ]
+  },
+  { "name": "Axe", "code": ["Disp \"Hello world!\",i"] },
+  {
+    "name": "B",
+    "code": ["main()\n{\n    putstr(\"Hello world!*n\");\n    return(0);\n}"]
+  },
+  { "name": "B4X", "code": ["Log(\"Hello world!\")"] },
+  { "name": "Babel", "code": ["\"Hello world!\" <<"] },
+  {
+    "name": "BabyCobol",
+    "code": [
+      "* Since no quotes are used, two undeclared fields (variables) are printed.\n      * Their default values are their own names in uppercase.\n       IDENTIFICATION DIVISION.\n           PROGRAM-ID. USER OUTPUT.\n       PROCEDURE DIVISION.\n           DISPLAY HELLO WORLD."
+    ]
+  },
+  { "name": "Bait", "code": ["fun main() {\n    println('Hello World!')\n}"] },
+  {
+    "name": "Ballerina",
+    "code": [
+      "import ballerina/io; \n\npublic function main() {\n    io:println(\"Hello World!\"); \n}",
+      "Hello, World!"
+    ]
+  },
+  { "name": "bash", "code": ["echo \"Hello world!\""] },
+  {
+    "name": "BASIC",
+    "code": ["10 print \"Hello world!\"", "PRINT \"Hello world!\""]
+  },
+  { "name": "BASIC256", "code": ["PRINT \"Hello world!\""] },
+  {
+    "name": "Batch File",
+    "code": [
+      "echo Hello world!",
+      "setlocal enableDelayedExpansion\necho Hello world!^^!"
+    ]
+  },
+  {
+    "name": "Battlestar",
+    "code": ["const hello = \"Hello world!\\n\"\n\nprint(hello)"]
+  },
+  { "name": "BBC BASIC", "code": ["PRINT \"Hello world!\""] },
+  { "name": "bc", "code": ["\"Hello world!\n\""] },
+  {
+    "name": "BCPL",
+    "code": [
+      "GET \"libhdr\"\n\nLET start() = VALOF\n{ writef(\"Hello world!\")\n  RESULTIS 0\n}"
+    ]
+  },
+  {
+    "name": "Beef",
+    "code": [
+      "Using System;\nnamespace HelloWorld {\n  class Program\n  {\n    static void Main()\n    {\n      Console.Writeln(\"Hello World!\");\n    }\n  }\n}"
+    ]
+  },
+  {
+    "name": "beeswax",
+    "code": [
+      "*`Hello, World!",
+      ">`ld!\n`\n r\n  o\n   W\n    `\n     b` ,olleH`_",
+      "r  l\n l o\n  ``\nol`*`,d!\n   ``\n   e H\n   W"
+    ]
+  },
+  { "name": "Befunge", "code": ["52*\"!dlroW ,olleH\">:#,_@"] },
+  { "name": "Binary Lambda Calculus", "code": ["Hello world!"] },
+  {
+    "name": "Bird",
+    "code": [
+      "use Console\n\ndefine Main\n    Console.Println \"Hello world\"\nend"
+    ]
+  },
+  {
+    "name": "Blade",
+    "code": [
+      "echo 'Hello world!'",
+      "print('Hello world!')",
+      "import io\nio.stdout.write('Hello world!')"
+    ]
+  },
+  {
+    "name": "Blast",
+    "code": [
+      "# This will display a goodbye message on the terminal screen\n.begin\ndisplay \"Hello world!\"\nreturn\n# This is the end of the script."
+    ]
+  },
+  { "name": "BlitzMax", "code": ["print \"Hello world!\""] },
+  {
+    "name": "Blue",
+    "code": [
+      "global _start\n\n: syscall ( num:eax -- result:eax ) syscall\u00a0;\n\n: exit ( status:edi -- noret ) 60 syscall\u00a0;\n: bye ( -- noret ) 0 exit\u00a0;\n\n1 const stdout\n\n: write ( buf:esi len:edx fd:edi -- ) 1 syscall drop\u00a0;\n: print ( buf len -- ) stdout write\u00a0;\n\n: greet ( -- ) s\" Hello world!\\n\" print\u00a0;\n\n: _start ( -- noret ) greet bye\u00a0;"
+    ]
+  },
+  { "name": "blz", "code": ["print(\"Hello world!\")"] },
+  { "name": "BML", "code": ["display \"Hello world!\""] },
+  { "name": "Boo", "code": ["print \"Hello world!\""] },
+  { "name": "bootBASIC", "code": ["10 print \"Hello world!\""] },
+  { "name": "BQN", "code": ["\u2022Out \"Hello world!\""] },
+  {
+    "name": "Brace",
+    "code": ["#!/usr/bin/env bx\nuse b\nMain:\n\tsay(\"Hello world!\")"]
+  },
+  { "name": "Bracmat", "code": ["put$\"Hello world!\""] },
+  {
+    "name": "Brainf***",
+    "code": [
+      "10\tclose to newline and carriage return\n30\tclose to\u00a0! and SPACE\n40\tclose to COMMA\n70\tclose to G\n80\tclose to W\n90\tclose to b\n100\tis d and close to e and l\n110\tclose to o\n120\tclose to y",
+      "+++++ +++++\t\tFirst cell 10 (its a counter and we will be \"multiplying\")\n\n[\n>+\t\t\t10 times 1 is 10\n>+++\t\t\t10 times 3 is 30\n>++++\t\t\tetc etc\n>+++++ ++\n>+++++ +++\n>+++++ ++++\n>+++++ +++++\n>+++++ ++++++\n>+++++ +++++++\n<<<<<<<<< -\t\tgo back to counter and subtract 1\n]\n\nprinting G\n>>>> + .\n\no twice\n>>>> + ..\n\nd\n< .\n\nb\n< +++++ +++ .\n\ny\n>>> + .\n\ne\n<< + .\n\nCOMMA\n<<<< ++++ .\n\nSPACE\n< ++ .\n\nW\n>>> +++++ ++ .\n\no\n>>> .\n\nr\n+++ .\n\nl\n< +++++ ++ .\n\nd\n----- --- .\n\n!\n<<<<< + .\n\nCRLF\n< +++ . --- .",
+      "++++++++++[>+>+++>++++>+++++++>++++++++>+++++++++>++\n++++++++>+++++++++++>++++++++++++<<<<<<<<<-]>>>>+.>>>\n>+..<.<++++++++.>>>+.<<+.<<<<++++.<++.>>>+++++++.>>>.+++.\n<+++++++.--------.<<<<<+.<+++.---."
+    ]
+  },
+  { "name": "Brat", "code": ["p \"Hello world!\""] },
+  { "name": "Brlcad", "code": ["echo Hello world!"] },
+  { "name": "Bruijn", "code": ["main [\"Hello world!\"]"] },
+  { "name": "Burlesque", "code": ["\"Hello world!\"sh"] },
+  {
+    "name": "C",
+    "code": [
+      "#include<stdio.h>\n\nint main()\n{\n  printf(\"\\nHello world!\");\n  return 0;\n}",
+      "#include<stdio.h>\n\nint main()\n{\n\treturn printf(\"\\nHello World!\");\n}",
+      "#include <stdlib.h>\n#include <stdio.h>\n\nint main(void)\n{\n  printf(\"Hello world!\\n\");\n  return EXIT_SUCCESS;\n}",
+      "#include <stdlib.h>\n#include <stdio.h>\n\nint main(void)\n{\n  puts(\"Hello world!\");\n  return EXIT_SUCCESS;\n}"
+    ]
+  },
+  {
+    "name": "C#",
+    "code": [
+      "namespace HelloWorld\n{\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello world!\");\n        }\n    }\n}",
+      "System.Console.WriteLine(\"Hello world!\");",
+      "using System;\nConsole.WriteLine(\"Hello world!\");"
+    ]
+  },
+  {
+    "name": "C++",
+    "code": [
+      "#include <iostream>\n\nint main() {\n  std::cout << \"Hello world!\\n\";\n}",
+      "import module std; // here does the same thing as #include <print>\n\nint main() {\n  std::print(\"Hello world!\\n\");\n}"
+    ]
+  },
+  {
+    "name": "C++/CLI",
+    "code": [
+      "using namespace System;\nint main()\n{\n  Console::WriteLine(\"Hello world!\");\n}"
+    ]
+  },
+  {
+    "name": "C1R",
+    "code": [
+      "Hello_world/Text",
+      "$ echo Hello_world/Text >hw.c1r\n$ ./c1r hw.c1r\n$ ./a.out\nHello world!"
+    ]
+  },
+  {
+    "name": "C2",
+    "code": [
+      "module hello_world;\nimport stdio as io;\n\nfunc i32 main(i32 argc, char** argv) {\n    io.printf(\"Hello World!\\n\");\n    return 0;\n}"
+    ]
+  },
+  {
+    "name": "C3",
+    "code": [
+      "import std::io;\n\nfn void main() \n{\n    io::printn(\"Hello, World!\");\n}"
+    ]
+  },
+  {
+    "name": "Casio BASIC",
+    "code": ["Locate 1,1,\"Hello World!\"", "\"Hello World!\""]
+  },
+  { "name": "Cat", "code": ["\"Hello world!\" writeln"] },
+  { "name": "Cduce", "code": ["print \"Hello world!\";;"] },
+  {
+    "name": "CFEngine",
+    "code": [
+      "#!/usr/bin/env cf-agent\n# without --no-lock option to cf-agent\n# this output will only occur once per minute\n# this is by design.\nbundle agent main\n{\n  reports:\n    \"Hello world!\";\n}"
+    ]
+  },
+  { "name": "Chapel", "code": ["writeln(\"Hello world!\");"] },
+  {
+    "name": "Chef",
+    "code": [
+      "Goodbye World Souffle.\n \nIngredients.\n71 g green beans\n111 cups oil\n98 g butter\n121 ml yogurt\n101 eggs\n44 g wheat flour\n32 zucchinis\n119 ml water\n114 g red salmon\n108 g lard\n100 g dijon mustard\n33 potatoes\n \nMethod.\nPut potatoes into the mixing bowl.\nPut dijon mustard into the mixing bowl.\nPut lard into the mixing bowl.\nPut red salmon into the mixing bowl.\nPut oil into the mixing bowl.\nPut water into the mixing bowl.\nPut zucchinis into the mixing bowl.\nPut wheat flour into the mixing bowl.\nPut eggs into the mixing bowl.\nPut yogurt into the mixing bowl.\nPut butter into the mixing bowl.\nPut dijon mustard into the mixing bowl.\nPut oil into the mixing bowl.\nPut oil into the mixing bowl.\nPut green beans into the mixing bowl.\nLiquefy contents of the mixing bowl.\nPour contents of the mixing bowl into the baking dish.\n \nServes 1."
+    ]
+  },
+  { "name": "Chipmunk Basic", "code": ["10 print \"Hello world!\""] },
+  { "name": "ChucK", "code": ["<<< \"Hello world!\">>>;"] },
+  {
+    "name": "Cind",
+    "code": ["execute() {\n    host.println(\"Hello world!\");\n}"]
+  },
+  { "name": "CJam", "code": ["\"Hello, world!\n\""] },
+  { "name": "Clay", "code": ["main() {\n    println(\"Hello world!\");\n}"] },
+  { "name": "Clean", "code": ["Start = \"Hello world!\""] },
+  { "name": "Clio", "code": ["'hello world!' -> print"] },
+  { "name": "Clipper", "code": ["? \"Hello world!\""] },
+  { "name": "CLIPS", "code": ["(printout t \"Hello world!\" crlf)"] },
+  {
+    "name": "CLU",
+    "code": [
+      "start_up = proc ()\n    po: stream\u00a0:= stream$primary_output()\n    stream$putl(po, \"Hello world!\")\nend start_up"
+    ]
+  },
+  { "name": "Clojure", "code": ["(println \"Hello world!\")"] },
+  {
+    "name": "CMake",
+    "code": ["message(STATUS \"Hello world!\")", "-- Hello world!"]
+  },
+  {
+    "name": "COBOL",
+    "code": [
+      "program-id. hello.\n\tprocedure division.\n\t\tdisplay \"Hello world!\".\n\t\tstop run.",
+      "display\"Hello, world\".",
+      "prompt$ cobc -x -frelax-syntax -free hello.cob\nhello.cob: 1: Warning: PROGRAM-ID header missing - assumed\nhello.cob: 1: Warning: PROCEDURE DIVISION header missing - assumed\n\nprompt$ ./hello\nHello, world"
+    ]
+  },
+  {
+    "name": "Cobra",
+    "code": ["class Hello\n    def main\n        print 'Hello world!'"]
+  },
+  {
+    "name": "CoffeeScript",
+    "code": ["console.log \"Hello world!\"", "print \"Hello world!\""]
+  },
+  { "name": "ColdFusion", "code": ["<cfoutput>Hello world!</cfoutput>"] },
+  { "name": "Comal", "code": ["PRINT \"Hello world!\""] },
+  { "name": "Comefrom0x10", "code": ["'Hello world!'", "\"Hello world!\""] },
+  {
+    "name": "Commodore BASIC",
+    "code": [
+      "10 print chr$(147);chr$(14);:REM 147=clear screen, 14=switch to lowercase mode\n20 print \"Hello world!\"\n30 end",
+      "Hello world!"
+    ]
+  },
+  {
+    "name": "Common Lisp",
+    "code": [
+      "(format t \"Hello world!~%\")",
+      "(print \"Hello world!\")",
+      ";; Project\u00a0: Hello world/Text\n\n(format t \"~a\" \"Hello world!\")",
+      "Hello world!"
+    ]
+  },
+  {
+    "name": "Component Pascal",
+    "code": [
+      "MODULE Hello;\n\tIMPORT Out;\n\t\n\tPROCEDURE Do*;\n\tBEGIN\n\t\tOut.String(\"Hello world!\"); Out.Ln\n\tEND Do;\nEND Hello."
+    ]
+  },
+  {
+    "name": "Coq",
+    "code": [
+      "Require Import Coq.Strings.String.\n\nEval compute in (\"Hello world!\"%string)."
+    ]
+  },
+  { "name": "Corescript", "code": ["print Hello world!"] },
+  {
+    "name": "Cowgol",
+    "code": ["include \"cowgol.coh\";\nprint(\"Hello world!\");\nprint_nl();"]
+  },
+  {
+    "name": "Crack",
+    "code": ["import crack.io cout;\ncout `Hello world!\\n`;"]
+  },
+  { "name": "Craft Basic", "code": ["print \"Hello world!\""] },
+  {
+    "name": "Creative Basic",
+    "code": [
+      "OPENCONSOLE\n\nPRINT\"Hello world!\"\n\n'This line could be left out.\nPRINT:PRINT:PRINT\"Press any key to end.\"\n\n'Keep the console from closing right away so the text can be read.\nDO:UNTIL INKEY$<>\"\"\n\nCLOSECONSOLE\n\nEND"
+    ]
+  },
+  { "name": "Crystal", "code": ["puts \"Hello world!\""] },
+  { "name": "Curto", "code": [".\" Hola, mundo!\""] },
+  {
+    "name": "D",
+    "code": [
+      "import std.stdio;\n\nvoid main() {\n    writeln(\"Hello world!\");\n}"
+    ]
+  },
+  {
+    "name": "Dafny",
+    "code": [
+      "method Main() {\n  print \"hello, world!\\n\";\n  assert 10 < 2;\n}"
+    ]
+  },
+  { "name": "Dao", "code": ["io.writeln( 'Hello world!' )"] },
+  {
+    "name": "Dart",
+    "code": ["main() {\n    var bye = 'Hello world!';\n    print(\"$bye\");\n}"]
+  },
+  { "name": "DataWeave", "code": ["\"Hello world!\""] },
+  {
+    "name": "DBL",
+    "code": [
+      ";\n;       Hello world for DBL version 4 by Dario B.\n;\n                                PROC\n;------------------------------------------------------------------\n        XCALL FLAGS (0007000000,1)           ;Suppress STOP message\n\n        OPEN (1,O,'TT:')\n        WRITES (1,\"Hello world\")\n\n        DISPLAY (1,\"Hello world\",10)\n        DISPLAY (1,$SCR_MOV(-1,12),\"again\",10)  ;move up, right and print\n\n        CLOSE 1\nEND"
+    ]
+  },
+  {
+    "name": "Dc",
+    "code": ["[Hello world!]p", "5735816763073014741799356604682 P"]
+  },
+  { "name": "DCL", "code": ["$ write sys$output \"Hello world!\""] },
+  {
+    "name": "DDNC",
+    "code": [
+      "0 111 10\n0 15 11\n0 15 12\n0 31 13\n0 47 14\n0 59 15\n0 125 16\n0 3 17\n0 0 18\n0 63 19\n0 15 20\n0 12 21\n0 36 22\n0 31 23\n0 17 24\n\n0 500 3\n0 10 2\n0 15 5\n\n60 4\n2 2 1\n80 1\n72 3\n30 2\n31 5\n62 5\n61 4\n64"
+    ]
+  },
+  {
+    "name": "Delphi",
+    "code": [
+      "program ProjectGoodbye;\n{$APPTYPE CONSOLE}\nbegin\n  WriteLn('Hello world!');\nend."
+    ]
+  },
+  { "name": "DeviousYarn", "code": ["o:\"Hello world!"] },
+  {
+    "name": "DIBOL-11",
+    "code": [
+      "START     ;Hello World\n\n          RECORD  HELLO\n,         A11, 'Hello World'\n\n          PROC\n          XCALL FLAGS (0007000000,1)          ;Suppress STOP message\n\n          OPEN(8,O,'TT:')\n          WRITES(8,HELLO)\n          END"
+    ]
+  },
+  {
+    "name": "Diego",
+    "code": [
+      "with_computer(comp1)_printer(lp1)_text(Hello World!);",
+      "with_me()_printer(lp1)_text(Hello World!);",
+      "me()_ptr(lp1)_txt(Hello World!);",
+      "me()_printer()_text(Hello World!);",
+      "with_computer()_printer()_text(Hello World!);",
+      "with_printer()_text(Hello World!);"
+    ]
+  },
+  {
+    "name": "DIV Games Studio",
+    "code": [
+      "PROGRAM HELLOWORLD;\n\nBEGIN\n\n    WRITE_TEXT(0,160,100,4,\"HELLO WORLD!\");\n    LOOP\n        FRAME;\n    END\nEND"
+    ]
+  },
+  {
+    "name": "DM",
+    "code": ["/client/New()\n    ..()\n    src << \"Hello world!\""]
+  },
+  {
+    "name": "Draco",
+    "code": ["proc nonrec main() void:\n    writeln(\"Hello world!\")\ncorp"]
+  },
+  { "name": "Dragon", "code": ["showln \"Hello world!\""] },
+  { "name": "DreamBerd", "code": ["print \"Hello world!\"!"] },
+  { "name": "dt", "code": ["\"Hello world!\" pl"] },
+  {
+    "name": "DuckDB",
+    "code": [
+      "# Turn off tabular output:\n.mode list\n.headers off\n\nselect 'Hello world!';",
+      "Hello world!"
+    ]
+  },
+  { "name": "DWScript", "code": ["PrintLn('Hello world!');"] },
+  { "name": "Dyalect", "code": ["print(\"Hello world!\")"] },
+  {
+    "name": "Dylan",
+    "code": ["module: hello-world\n\nformat-out(\"%s\\n\", \"Hello world!\");"]
+  },
+  {
+    "name": "Dylan.NET",
+    "code": [
+      "Console::WriteLine(\"Hello world!\")",
+      "//compile using the new dylan.NET v, 11.5.1.2 or later\n//use mono to run the compiler\n#refstdasm mscorlib.dll\n\nimport System\n\nassembly helloworld exe\nver 1.2.0.0\n\nclass public Program\n\n   method public static void main()\n      Console::WriteLine(\"Hello world!\")\n   end method\n\nend class"
+    ]
+  },
+  { "name": "D\u00e9j\u00e0 Vu", "code": ["!print \"Hello world!\""] },
+  {
+    "name": "E",
+    "code": ["println(\"Hello world!\")\n\nstdout.println(\"Hello world!\")"]
+  },
+  { "name": "EasyLang", "code": ["print \"Hello world!\""] },
+  {
+    "name": "eC",
+    "code": [
+      "class GoodByeApp : Application\n{\n   void Main()\n   {\n      PrintLn(\"Hello world!\");\n   }\n}"
+    ]
+  },
+  { "name": "EchoLisp", "code": ["(display \"Hello world!\" \"color:blue\")"] },
+  { "name": "ECL", "code": ["OUTPUT('Hello world!');"] },
+  {
+    "name": "Ecstasy",
+    "code": [
+      "module HelloWorld {\n    void run() {\n        @Inject Console console;\n        console.print(\"Hello, World!\");\n    }\n}"
+    ]
+  },
+  { "name": "Ed", "code": ["a\nHello World!\n.\np\nQ"] },
+  {
+    "name": "EDSAC order code",
+    "code": [
+      "[ Print HELLO WORLD ]\n[ A program for the EDSAC ]\n[ Works with Initial Orders 2 ]\n\nT64K  [ Set load point: address 64 ]\nGK    [ Set base address ]\nO13@  [ Each O order outputs one ]\nO14@  [ character. The numerical ]\nO15@  [ parameter gives the offset ]\nO16@  [ (from the base address) where ]\nO17@  [ the character to print is ]\nO18@  [ stored ]\nO19@\nO20@\nO21@  \nO22@\nO23@\nO24@\nZF    [ Stop ]\n*F    [ Shift to print letters ]\nHF    [ Character literals ]\nEF\nLF\nLF\nOF\n!F    [ Space character ]\nWF\nOF\nRF\nLF\nDF\nEZPF  [ Start program beginning at\n        the load point ]",
+      "HELLO WORLD"
+    ]
+  },
+  {
+    "name": "Efene",
+    "code": [
+      "io.format(\"Hello world!~n\")",
+      "@public \nrun = fn () {\n    io.format(\"Hello world!~n\")\n}"
+    ]
+  },
+  { "name": "Egel", "code": ["def main = \"Hello World!\""] },
+  {
+    "name": "Egison",
+    "code": [
+      "(define $main\n  (lambda [$argv]\n    (write-string \"Hello world!\\n\")))"
+    ]
+  },
+  {
+    "name": "EGL",
+    "code": [
+      "program HelloWorld\n    function main()\n        SysLib.writeStdout(\"Hello world!\");\n    end\nend"
+    ]
+  },
+  {
+    "name": "Eiffel",
+    "code": [
+      "class\n    HELLO_WORLD\ncreate\n    make\nfeature\n    make\n        do\n            print (\"Hello world!%N\")\n        end\nend"
+    ]
+  },
+  {
+    "name": "Ela",
+    "code": ["open monad io\ndo putStrLn \"Hello world!\"\u00a0::: IO"]
+  },
+  { "name": "Elan", "code": ["putline (\"Hello, world!\");"] },
+  {
+    "name": "elastiC",
+    "code": [
+      "package hello;\n\n    // Import the `basic' package\n    import basic;\n\n    // Define a simple function\n    function hello()\n    {\n        // Print hello world\n        basic.print( \"Hello world!\\n\" );\n    }\n\n    /*\n     *  Here we start to execute package code\n     */\n\n    // Invoke the `hello' function\n    hello();"
+    ]
+  },
+  {
+    "name": "Elena",
+    "code": ["public program()\n{\n    console.writeLine(\"Hello world!\")\n}"]
+  },
+  { "name": "Elisa", "code": ["\"Hello world!\"?"] },
+  { "name": "Elixir", "code": ["IO.puts \"Hello world!\""] },
+  { "name": "Elm", "code": ["main = text \"Goodbye World!\""] },
+  {
+    "name": "Emacs Lisp",
+    "code": ["(message \"Hello world!\")", "(princ \"Hello world!\\n\")"]
+  },
+  { "name": "EMal", "code": ["writeLine(\"Hello world!\")"] },
+  {
+    "name": "Emojicode",
+    "code": [
+      "\ud83c\udfc1 \ud83c\udf47\n  \ud83d\ude00 \ud83d\udd24Hello world!\ud83d\udd24\n\ud83c\udf49"
+    ]
+  },
+  {
+    "name": "Enguage",
+    "code": [
+      "On \"say hello world\", reply \"hello world\".\n\n## This can be tested:\n#] say hello world: hello world.\n\n## This can also be created within Enguage:\n#] to the phrase hello reply hello to you too: ok.\n#] hello: hello to you too.",
+      "TEST: hello\n===========\n\nuser> say hello world.\nenguage> hello world.\n\nuser> to the phrase hello reply hello to you too.\nenguage> ok.\n\nuser> hello.\nenguage> hello to you too.\n1 test group(s) found\n+++ PASSED 3 tests in 53ms +++"
+    ]
+  },
+  { "name": "Erlang", "code": ["io:format(\"Hello world!~n\")."] },
+  {
+    "name": "ERRE",
+    "code": [
+      "! Hello World in ERRE language\nPROGRAM HELLO\nBEGIN\n  PRINT(\"Hello world!\")\nEND PROGRAM"
+    ]
+  },
+  { "name": "Euler Math Toolbox", "code": ["\"Hello world!\""] },
+  { "name": "Extended BrainF***", "code": ["[.>]@Hello world!"] },
+  { "name": "Extended Color BASIC", "code": ["PRINT \"HELLO WORLD!\""] },
+  { "name": "Ezhil", "code": [] },
+  {
+    "name": "F#",
+    "code": [
+      "printfn \"%s\" \"Hello world!\"",
+      "System.Console.WriteLine(\"Hello world!\")"
+    ]
+  },
+  { "name": "Factor", "code": ["\"Hello world!\" print"] },
+  {
+    "name": "Falcon",
+    "code": ["printl(\"Hello world!\")", "> \"Hello world!\""]
+  },
+  { "name": "FALSE", "code": ["\"Hello world!\n\""] },
+  {
+    "name": "Fantom",
+    "code": [
+      "class HelloText\n{\n  public static Void main ()\n  {\n    echo (\"Hello world!\")\n  }\n}"
+    ]
+  },
+  { "name": "Fe", "code": ["(print \"Hello World\")"] },
+  { "name": "Fennel", "code": ["(print \"Hello World\")"] },
+  {
+    "name": "ferite",
+    "code": ["uses \"console\";\nConsole.println( \"Goodby, World!\" );"]
+  },
+  { "name": "Fermat", "code": ["!!'Hello, World!';"] },
+  { "name": "Fexl", "code": ["say \"Hello world!\""] },
+  { "name": "Fhidwfe", "code": ["puts$ \"Hello, world!\\n\""] },
+  { "name": "Fish", "code": ["!v\"Hello world!\"r!\n >l?!;o"] },
+  { "name": "FOCAL", "code": ["TYPE \"Hello, world\"\u00a0!"] },
+  {
+    "name": "Forth",
+    "code": [
+      ".\" Hello world!\"",
+      ": goodbye ( -- )   .\" Hello world!\" CR\u00a0;"
+    ]
+  },
+  {
+    "name": "Fortran",
+    "code": [
+      "print *,\"Hello world!\"",
+      "100   format (5X,A,\"!\")\n      print 100,\"Hello world!\"",
+      "write (89,100) \"Hello world!\""
+    ]
+  },
+  {
+    "name": "Fortress",
+    "code": [
+      "export Executable                                                                                                                       \n                                                                                                                                        \nrun() = println(\"Hello world!\")"
+    ]
+  },
+  { "name": "FreeBASIC", "code": ["? \"Hello world!\"\nsleep"] },
+  {
+    "name": "Free Pascal",
+    "code": [
+      "PROGRAM HelloWorld\u00a0;\n\n{$APPTYPE CONSOLE}\n\n(*) \n\n        https://www.freepascal.org/advantage.var\n\n(*)\n\nUSES\n\n    crt;\n\nBEGIN\n\n  WriteLn ( 'Hello world!' )\u00a0;\n\nEND."
+    ]
+  },
+  {
+    "name": "Frege",
+    "code": ["module HelloWorld where\nmain _ = println \"Hello world!\""]
+  },
+  { "name": "friendly interactive shell", "code": ["echo Hello world!"] },
+  { "name": "Frink", "code": ["println[\"Hello world!\"]"] },
+  { "name": "FTCBASIC", "code": ["print \"Hello, world!\"\npause\nend"] },
+  {
+    "name": "FuncSug",
+    "code": ["displayNewMessage('Hello, world!')", "print('Hello, world!')"]
+  },
+  { "name": "FunL", "code": ["println( 'Hello world!' )"] },
+  { "name": "Furor", "code": [".\"Hello, World!\\n\""] },
+  { "name": "Peri", "code": [".\"Hello, World!\\n\""] },
+  {
+    "name": "FutureBasic",
+    "code": ["window 1\nprint @\"Hello world!\"\n\nHandleEvents"]
+  },
+  { "name": "FUZE BASIC", "code": ["PRINT \"Hello world!\""] },
+  {
+    "name": "Gambas",
+    "code": ["Public Sub Main()\n\nPRINT \"Hello world!\"\n \nEnd"]
+  },
+  {
+    "name": "GAP",
+    "code": [
+      "# Several ways to do it\n\"Hello world!\";\n\nPrint(\"Hello world!\\n\"); # No EOL appended\n\nDisplay(\"Hello world!\");\n\nf\u00a0:= OutputTextUser();\nWriteLine(f, \"Hello world!\\n\");\nCloseStream(f);"
+    ]
+  },
+  { "name": "GB BASIC", "code": ["10 print \"Hello world!\""] },
+  { "name": "gecho", "code": ["'Hello, <> 'World! print"] },
+  {
+    "name": "Gema",
+    "code": [
+      "*=\u00a0! ignore off content of input\n\\B=Hello world!\\!\u00a0! Start output with this text."
+    ]
+  },
+  { "name": "Genie", "code": ["init\n    print \"Hello world!\""] },
+  {
+    "name": "Gentee",
+    "code": ["func hello <main>\n{\n   print(\"Hello world!\")\n}"]
+  },
+  { "name": "GFA Basic", "code": ["PRINT \"Hello World\""] },
+  { "name": "GLBasic", "code": ["STDOUT \"Hello world!\""] },
+  {
+    "name": "Gleam",
+    "code": [
+      "import gleam/io\n\npub fn main() {\n    io.println(\"Hello world!\")\n}"
+    ]
+  },
+  {
+    "name": "Glee",
+    "code": [
+      "\"Hello world!\"",
+      "'Hello world!'",
+      "'\"Goodbye,World!\"'",
+      "\"'Goodbye,World!'\""
+    ]
+  },
+  { "name": "Global Script", "code": ["\u03bb _. print qq{Hello world!\\n}"] },
+  { "name": "GlovePIE", "code": ["debug=\"Hello world!\""] },
+  {
+    "name": "GML",
+    "code": [
+      "show_message(\"Hello world!\"); // displays a pop-up message\nshow_debug_message(\"Hello world!\"); // sends text to the debug log or IDE"
+    ]
+  },
+  {
+    "name": "Go",
+    "code": [
+      "package main\n\nimport \"fmt\"\n\nfunc main() { fmt.Println(\"Hello world!\") }"
+    ]
+  },
+  { "name": "Golfscript", "code": ["\"Hello world!\""] },
+  { "name": "Gosu", "code": ["print(\"Hello world!\")"] },
+  { "name": "Grain", "code": ["print(\"Hello world!\")"] },
+  { "name": "Groovy", "code": ["println \"Hello world!\""] },
+  { "name": "GW-BASIC", "code": ["10 PRINT \"Hello world!\""] },
+  { "name": "Hack", "code": ["<?hh echo 'Hello world!';\u00a0?>"] },
+  { "name": "Halon", "code": ["echo \"Hello world!\";"] },
+  { "name": "Harbour", "code": ["? \"Hello world!\""] },
+  {
+    "name": "Hare",
+    "code": [
+      "use fmt;\n\nexport fn main() void = {\n\tfmt::println(\"Hello, world!\")!;\n};"
+    ]
+  },
+  { "name": "Haskell", "code": ["main = putStrLn \"Hello world!\""] },
+  { "name": "Haxe", "code": ["trace(\"Hello world!\");"] },
+  { "name": "hexiscript", "code": ["println \"Hello world!\""] },
+  { "name": "HicEst", "code": ["WRITE() 'Hello world!'"] },
+  {
+    "name": "HLA",
+    "code": [
+      "program goodbyeWorld;\n#include(\"stdlib.hhf\")\nbegin goodbyeWorld;\n\n  stdout.put( \"Hello world!\" nl );\n\nend goodbyeWorld;"
+    ]
+  },
+  { "name": "HolyC", "code": ["\"Hello world!\\n\";"] },
+  { "name": "Hoon", "code": ["~&  \"Hello world!\"  ~"] },
+  {
+    "name": "Hopper",
+    "code": [
+      "program Hello\n{\n    uses \"/Source/Library/Boards/PiPico\"\n    \n    Hopper()\n    {\n        WriteLn(\"Hello world!\");\n        loop\n        {\n            LED = !LED;\n            Delay(500);\n        }\n    }\n}",
+      "!> hello\nHello world!"
+    ]
+  },
+  { "name": "HPPPL", "code": ["PRINT(\"Hello world!\");"] },
+  { "name": "HQ9+", "code": ["H"] },
+  {
+    "name": "Huginn",
+    "code": [
+      "#! /bin/sh\nexec huginn --no-argv -E \"${0}\" \"${@}\"\n#! huginn\n\nmain() {\n\tprint( \"Hello World!\\n\" );\n\treturn ( 0 );\n}"
+    ]
+  },
+  {
+    "name": "HTML5",
+    "code": [
+      "<!DOCTYPE html>\n<html>\n<body>\n<h1>Hello world!</h1>\n</body>\n</html>"
+    ]
+  },
+  { "name": "Hy", "code": ["(print \"Hello world!\")"] },
+  { "name": "i", "code": ["software {\n    print(\"Hello world!\")\n}"] },
+  {
+    "name": "Icon  and Unicon",
+    "code": ["procedure main()\n  write( \"Hello world!\" )\nend"]
+  },
+  { "name": "IDL", "code": ["print,'Hello world!'"] },
+  {
+    "name": "Idris",
+    "code": [
+      "module Main\n\nmain\u00a0: IO ()\nmain = putStrLn \"Hello world!\""
+    ]
+  },
+  { "name": "Inform 6", "code": ["[Main;\n  print \"Hello world!^\";\n];"] },
+  {
+    "name": "Inko",
+    "code": ["import std::stdio::stdout\n\nstdout.print('Hello, world!')"]
+  },
+  { "name": "Insitux", "code": ["(print \"Hello, world!\")"] },
+  {
+    "name": "Intercal",
+    "code": [
+      "DO ,1 <- #13\nPLEASE DO ,1 SUB #1 <- #238\nDO ,1 SUB #2 <- #108\nDO ,1 SUB #3 <- #112\nDO ,1 SUB #4 <- #0\nDO ,1 SUB #5 <- #64\nDO ,1 SUB #6 <- #194\nPLEASE DO ,1 SUB #7 <- #48\nDO ,1 SUB #8 <- #26\nDO ,1 SUB #9 <- #244\nPLEASE DO ,1 SUB #10 <- #168\nDO ,1 SUB #11 <- #24\nDO ,1 SUB #12 <- #16\nDO ,1 SUB #13 <- #162\nPLEASE READ OUT ,1\nPLEASE GIVE UP"
+    ]
+  },
+  { "name": "Integer BASIC", "code": ["10 PRINT \"Hello world!\"\n   20 END"] },
+  { "name": "Io", "code": ["\"Hello world!\" println"] },
+  { "name": "Ioke", "code": ["\"Hello world!\" println"] },
+  { "name": "IS-BASIC", "code": ["PRINT \"Hello world!\""] },
+  {
+    "name": "Isabelle",
+    "code": [
+      "theory Scratch\n  imports Main\nbegin\n  value \u2039''Hello world!''\u203a\nend"
+    ]
+  },
+  {
+    "name": "IWBASIC",
+    "code": [
+      "OPENCONSOLE\n\nPRINT\"Hello world!\"\n\n'This line could be left out.\nPRINT:PRINT:PRINT\"Press any key to end.\"\n\n'Keep the console from closing right away so the text can be read.\nDO:UNTIL INKEY$<>\"\"\n\nCLOSECONSOLE\n\nEND"
+    ]
+  },
+  {
+    "name": "J",
+    "code": [
+      "'Hello world!'\nHello world!",
+      "[data=. 'Hello world!'\nHello world!\n   data\nHello world!\n   smoutput data\nHello world!\n\n   NB. unassigned names are verbs of infinite rank awaiting definition.\n   NB. j pretty prints the train.\n   Hello World!\nHello World\u00a0!\n\n\n   NB. j is glorious, and you should know this!\n\n   i. 2 3   NB. an array of integers\n0 1 2\n3 4 5\n\n   verb_with_infinite_rank =: 'Hello world!'\"_\n\n   verb_with_infinite_rank i. 2 3\nHello world!\n   \n\n   verb_with_atomic_rank =: 'Hello world!'\"0\n\n   verb_with_atomic_rank i. 2 3\nHello world!\nHello world!\nHello world!\n\nHello world!\nHello world!\nHello world!"
+    ]
+  },
+  {
+    "name": "Jack",
+    "code": [
+      "class Main {\n  function void main () {\n    do Output.printString(\"Hello world!\");\n    do Output.println();\n    return;\n  }\n}"
+    ]
+  },
+  {
+    "name": "Jacquard Loom",
+    "code": [
+      "+---------------+\n|               |\n|    *    *     |\n|*   *    *  *  |\n|*           * *|\n|*           * *|\n|*  *         * |\n|   *     *   * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|*   *    *     |\n|*   *    *     |\n|            * *|\n|            * *|\n|*  *         * |\n|*  *     *   * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|*   **   * *   |\n|*******  *** * |\n| **** *   * ***|\n| **** *  ******|\n| ******   ** * |\n|   * *   *   * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|*******  *** * |\n|*******  *** * |\n|           ** *|\n|*        *  * *|\n|*******   ** * |\n|*******  *** * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|*******  *** * |\n|*******  *** * |\n|      *  *  * *|\n|      *  *  * *|\n|*******  **  * |\n|*******  **  * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|***** *  *** * |\n|*******  *** * |\n|     * * *  *  |\n|     * *    *  |\n|******   **  * |\n|******   **  * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|    *    * *   |\n|***** *  ***** |\n|***** **  * ***|\n|***** **  * ***|\n|*******   * ** |\n|   * *   *   * |\n|         *     |\n+---------------+\n\n+---------------+\n|               |\n|               |\n|     * *       |\n|     * *       |\n|     *         |\n|     *         |\n|               |\n|               |\n+---------------+"
+    ]
+  },
+  {
+    "name": "Jai",
+    "code": [
+      "#import \"Basic\";\n\nmain\u00a0:: () {\n    print(\"Hello, World!\\n\");\n}"
+    ]
+  },
+  { "name": "Jakt", "code": ["fn main() {\n    println(\"Hello world!\")\n}"] },
+  { "name": "Janet", "code": ["(print \"Hello world!\")"] },
+  {
+    "name": "Java",
+    "code": [
+      "public class HelloWorld\n{\n public static void main(String[] args)\n {\n  System.out.println(\"Hello world!\");\n }\n}"
+    ]
+  },
+  {
+    "name": "JavaScript",
+    "code": [
+      "document.write(\"Hello world!\");",
+      "print('Hello world!');",
+      "WScript.Echo(\"Hello world!\");",
+      "console.log(\"Hello world!\")"
+    ]
+  },
+  { "name": "JCL", "code": ["/*MESSAGE Hello world!"] },
+  {
+    "name": "Jinja",
+    "code": [
+      "from jinja2 import Template\nprint(Template(\"Hello World!\").render())",
+      "from jinja2 import Template\nprint(Template(\"Hello {{ something }}!\").render(something=\"World\"))"
+    ]
+  },
+  { "name": "Joy", "code": ["\"Hello world!\\n\" putchars."] },
+  { "name": "jq", "code": ["\"Hello world!\""] },
+  { "name": "JSE", "code": ["Print \"Hello world!\""] },
+  { "name": "Jsish", "code": ["puts(\"Hello world!\")"] },
+  { "name": "Julia", "code": ["println(\"Hello world!\")"] },
+  {
+    "name": "K",
+    "code": [
+      "\"Hello world!\"",
+      "`0: \"Hello world!\\n\"",
+      "s: \"Hello world!\"\ns",
+      "\\echo \"Hello world!\""
+    ]
+  },
+  { "name": "Kabap", "code": ["return = \"Hello world!\";"] },
+  {
+    "name": "Kaya",
+    "code": [
+      "program hello;\n \nVoid main() {\n    // My first program!\n    putStrLn(\"Hello world!\");\n}"
+    ]
+  },
+  {
+    "name": "Kdf9 Usercode",
+    "code": [
+      "V2; W0;\nRESTART; J999; J999;\nPROGRAM;                   (main program);\n   V0 = Q0/AV1/AV2;\n   V1 = B0750064554545700; (\"Hello\" in Flexowriter code);\n   V2 = B0767065762544477; (\"World\" in Flexowriter code);\n   V0; =Q9; POAQ9;         (write \"Hello World\" to Flexowriter);\n999;  OUT;\n   FINISH;"
+    ]
+  },
+  { "name": "Keg", "code": ["Hello world\\!"] },
+  {
+    "name": "Kite",
+    "code": ["\"#!/usr/local/bin/kite\n\n\"Hello world!\"|print;"]
+  },
+  { "name": "Kitten", "code": ["\"Hello world!\" say"] },
+  {
+    "name": "KL1",
+    "code": [
+      ":- module main.\n\nmain\u00a0:-\n      unix:unix([stdio(normal(S))]),\n      S = [fwrite(\"Hello world\\n\")]."
+    ]
+  },
+  {
+    "name": "Koka",
+    "code": [
+      "fun main() {\n  println(\"Hello world!\")\n}",
+      "fun main()\n  \"Hello world!\".println"
+    ]
+  },
+  { "name": "Komodo", "code": ["println(\"Hello world!\")"] },
+  {
+    "name": "KonsolScript",
+    "code": ["function main() {\n  Konsol:Log(\"Hello world!\")\n}"]
+  },
+  {
+    "name": "Kotlin",
+    "code": ["fun main() {\n    println(\"Hello world!\")\n}"]
+  },
+  { "name": "KQL", "code": ["print 'Hello world!'"] },
+  { "name": "KSI", "code": ["`plain\n'Hello world!' #echo #"] },
+  {
+    "name": "Labyrinth",
+    "code": ["72.101.108:..111.32.119.111.114.108.100.33.\\@"]
+  },
+  {
+    "name": "Lambdatalk",
+    "code": ["Hello world!\n{h1 Hello world!}\n_h1 Hello world!\\n"]
+  },
+  { "name": "Lang", "code": ["fn.println(Hello world!)"] },
+  { "name": "Lang5", "code": ["\"Hello world!\\n\" ."] },
+  { "name": "langur", "code": ["writeln \"Hello\""] },
+  { "name": "Lasso", "code": ["'Hello world!'"] },
+  {
+    "name": "LaTeX",
+    "code": [
+      "\\documentclass{minimal}\n\\begin{document}\nHello World!\n\\end{document}"
+    ]
+  },
+  { "name": "Latitude", "code": ["putln \"Hello world!\"."] },
+  {
+    "name": "LC3 Assembly",
+    "code": [
+      ".orig x3000\nLEA R0, hello   \u00a0; R0 = &hello\nTRAP x22        \u00a0; PUTS (print char array at addr in R0)\nHALT\nhello .stringz \"Hello World!\"\n.end",
+      ".orig x3000\nLEA R1, hello       \u00a0; R1 = &hello\nTOP LDR R0, R1, #0  \u00a0; R0 = R1[0]\nBRz END             \u00a0; if R0 is string terminator (x0000) go to END\nTRAP x21            \u00a0; else OUT (write char in R0)\nADD R1, R1, #1      \u00a0;      increment R1\nBR TOP              \u00a0;      go to TOP\nEND HALT\nhello .stringz \"Hello World!\"\n.end"
+    ]
+  },
+  { "name": "LDPL", "code": ["procedure:\ndisplay \"Hello World!\" crlf"] },
+  {
+    "name": "Lean",
+    "code": [
+      "#eval \"Hello world!\"",
+      "def main\u00a0: IO Unit\u00a0:=\n  IO.println (\"Hello world!\")\n\n#eval main"
+    ]
+  },
+  { "name": "LFE", "code": ["(: io format '\"Hello world!~n\")"] },
+  { "name": "Liberty BASIC", "code": ["print \"Hello world!\""] },
+  {
+    "name": "LIL",
+    "code": ["#\n# Hello world in lil\n#\n\nprint \"Hello, world!\""]
+  },
+  {
+    "name": "Lily",
+    "code": ["print(\"Hello world!\")", "stdout.print(\"Hello world!\\n\")"]
+  },
+  {
+    "name": "LilyPond",
+    "code": [
+      "\\version \"2.18.2\"\nglobal = {\n  \\time 4/4\n  \\key c \\major\n  \\tempo 4=100\n}\n\\relative c''{ g e e( g2)\n}\n\\addlyrics {\n  Hel -- lo,   World!\n}"
+    ]
+  },
+  {
+    "name": "Limbo",
+    "code": [
+      "implement Command;\n \n include \"sys.m\";\n     sys: Sys;\n \n include \"draw.m\";\n \n include \"sh.m\";\n \n init(nil: ref Draw->Context, nil: list of string)\n {\n     sys = load Sys Sys->PATH;\n     sys->print(\"Hello world!\\n\");\n }"
+    ]
+  },
+  {
+    "name": "Lingo",
+    "code": ["put \"Hello world!\"", "trace(\"Hello world!\")"]
+  },
+  {
+    "name": "Lisaac",
+    "code": [
+      "Section Header          // The Header section is required.\n  + name\u00a0:= GOODBYE;    // Define the name of this object.\n\nSection Public\n  - main <- (\"Hello world!\\n\".print;);",
+      "Section Header          // The Header section is required.\n  + name\u00a0:= GOODBYE2;   // Define the name of this object.\n\nSection Public\n  - main <- (IO.put_string \"Hello world!\\n\";);"
+    ]
+  },
+  {
+    "name": "Little",
+    "code": [
+      "puts(\"Hello world!\");",
+      "puts(nonewline: \"Hello world!\");",
+      "puts(stderr, \"Hello world!\");"
+    ]
+  },
+  {
+    "name": "LiveCode",
+    "code": [
+      "put \"Hello World!\"",
+      "Answer \"Hello World!\"",
+      "#! /usr/local/bin/livecode-server\nset the outputLineEndings to \"lf\"\nput \"Hello world!\" & return",
+      "write \"Hello world!\" & return to stdout"
+    ]
+  },
+  {
+    "name": "LLVM",
+    "code": [
+      "; const char str[14] = \"Hello World!\\00\"\n@str = private unnamed_addr constant  [14 x i8] c\"Hello, world!\\00\"\n\n; declare extern `puts` method\ndeclare i32 @puts(i8*) nounwind\n\ndefine i32 @main()\n{\n  call i32 @puts( i8* getelementptr ([14 x i8], [14 x i8]* @str, i32 0,i32 0))\n  ret i32 0\n}"
+    ]
+  },
+  { "name": "Lobster", "code": ["print \"Hello world!\""] },
+  { "name": "Logo", "code": ["print [Hello world!]", "type [Hello world!]"] },
+  {
+    "name": "Logtalk",
+    "code": [
+      ":- object(hello_world).\n\n   \u00a0% the initialization/1 directive argument is automatically executed\n   \u00a0% when the object is loaded into memory:\n   \u00a0:- initialization(write('Hello world!\\n')).\n\n:- end_object."
+    ]
+  },
+  {
+    "name": "LOLCODE",
+    "code": ["HAI\nCAN HAS STDIO?\nVISIBLE \"Hello world!\"\nKTHXBYE"]
+  },
+  {
+    "name": "LotusScript",
+    "code": [
+      ":- object(hello_world).\n    'This will send the output to the status bar at the bottom of the Notes client screen\n    print \"Hello world!\"\n\n:- end_object."
+    ]
+  },
+  { "name": "LSE", "code": ["AFFICHER [U, /] 'Hello world!'"] },
+  { "name": "LSE64", "code": ["\"Hello world!\" ,t nl"] },
+  {
+    "name": "Lua",
+    "code": [
+      "print \"Hello world!\"",
+      "local chars = {\"G\",\"o\",\"o\",\"d\",\"b\",\"y\",\"e\",\",\",\" \",\"W\",\"o\",\"r\",\"l\",\"d\",\"!\"}\nfor i = 1, #chars do\n  io.write(chars[i])\nend\n-- or:\nprint(table.concat(chars))"
+    ]
+  },
+  {
+    "name": "Luna",
+    "code": ["def main:\n    hello = \"Hello, World!\"\n    print hello"]
+  },
+  {
+    "name": "M2000 Interpreter",
+    "code": ["module HelloWorld {\n    print \"Hello World!\"\n}\nHelloWorld"]
+  },
+  { "name": "M4", "code": ["`Hello world!'"] },
+  {
+    "name": "MACRO-10",
+    "code": [
+      "TITLE HELLO\n\nCOMMENT\u00a0!\n  Hello-World program, PDP-10 assembly language, written by kjx, 2022.\n           Assembler: MACRO-10    Operating system: TOPS-20\n!\n\n        SEARCH MONSYM                      ;Get symbolic names for system-calls.\n\nGO::    RESET%                             ;System call: Initialize process.\n\n        HRROI 1,[ASCIZ /Hello World!/]     ;Put pointer to string into register 1.\n        PSOUT%                             ;System call: Print string.\n        HALTF%                             ;System call: Halt program.\n\n        JRST GO                            ;Unconditional jump to GO (in case the\n                                           ;user uses the CONTINUE-command while this\n                                           ;program is still loaded).\n\n        END GO"
+    ]
+  },
+  {
+    "name": "MACRO-11",
+    "code": [
+      ";\n;          TEXT BASED HELLO WORLD\n;          WRITTEN  BY:  BILL GUNSHANNON\n;\n \n           .MCALL  .PRINT .EXIT \n           .RADIX  10\n \n \n \nMESG1:     .ASCII  \"  \"\n           .ASCII  \" HELLO WORLD \"\n           .EVEN\n \nSTART:\n           .PRINT  #MESG1\n \nDONE:\n \n;   CLEAN UP AND GO BACK TO KMON\n \n           .EXIT\n \n \n           .END     START"
+    ]
+  },
+  {
+    "name": "Maclisp",
+    "code": ["(format t \"Hello world!~%\")", "(print \"Hello world!\")"]
+  },
+  {
+    "name": "MAD",
+    "code": [
+      "VECTOR VALUES HELLO = $11HHELLO WORLD*$\n           PRINT FORMAT HELLO\n           END OF PROGRAM"
+    ]
+  },
+  { "name": "make", "code": ["all:\n$(info Hello world!)"] },
+  {
+    "name": "Malbolge",
+    "code": [
+      "('&%:9]!~}|z2Vxwv-,POqponl$Hjig%eB@@>}=<M:9wv6WsU2T|nm-,jcL(I&%$#\"\n`CB]V?Tx<uVtT`Rpo3NlF.Jh++FdbCBA@?]!~|4XzyTT43Qsqq(Lnmkj\"Fhg${z@>",
+      "(=<`#9]~6ZY32Vx/4Rs+0No-&Jk)\"Fh}|Bcy?`=*z]Kw%oG4UUS0/@-ejc(:'8dc",
+      "HELLO WORLD!"
+    ]
+  },
+  {
+    "name": "MANOOL",
+    "code": [
+      "{{extern \"manool.org.18/std/0.3/all\"} in WriteLine[Out; \"Hello world!\"]}",
+      "{{extern \"manool.org.18/std/0.3/all\"} in Out.WriteLine[\"Hello world!\"]}",
+      "{{extern \"manool.org.18/std/0.3/all\"} in {WriteLine Out \"Hello world!\"}}",
+      "{{extern \"manool.org.18/std/0.3/all\"} in: WriteLine Out \"Hello world!\"}",
+      "{{extern; \"manool.org.18/std/0.3/all\"} in: WriteLine; Out; \"Hello world!\"}"
+    ]
+  },
+  {
+    "name": "Maple",
+    "code": [
+      "> printf( \"Hello world!\\n\" ): # print without quotes\nHello world!"
+    ]
+  },
+  {
+    "name": "MariaDB",
+    "code": ["SELECT 'Hello world!' AS greeting;\nVALUES ('Hello world!');"]
+  },
+  { "name": "Mastermind", "code": ["output \"Hello world!\\n\";"] },
+  { "name": "Mathcad", "code": ["\"Hello, World!\""] },
+  {
+    "name": "Mathematica  / Wolfram Language",
+    "code": ["Print[\"Hello world!\"]"]
+  },
+  { "name": "MATLAB", "code": [">> disp('Hello world!')"] },
+  {
+    "name": "Maude",
+    "code": [
+      "fmod BYE-WORLD is\n\n\tprotecting STRING .\n\t\n\top sayBye\u00a0: -> String .\n\t\n\teq sayBye = \"Hello world!\" .\n\t\nendfm\n\nred sayBye ."
+    ]
+  },
+  { "name": "Maxima", "code": ["print(\"Hello world!\");"] },
+  {
+    "name": "MAXScript",
+    "code": ["print \"Hello world!\"", "format \"%\" \"Hello world!\""]
+  },
+  { "name": "MDL", "code": ["<PRINC \"Hello world!\">\n<CRLF>"] },
+  {
+    "name": "MEL",
+    "code": ["proc helloWorld () {\n   print \"Hello, world!\\n\";\n}"]
+  },
+  { "name": "MelonBasic", "code": ["Say:Hello world!\n\nhelloWorld;"] },
+  {
+    "name": "Mercury",
+    "code": [
+      ":- module hello.\n:- interface.\n:- import_module io.\n:- pred main(io::di, io::uo) is det.\n\n:- implementation.\nmain(!IO)\u00a0:-\n    io.write_string(\"Hello world!\\n\", !IO)."
+    ]
+  },
+  { "name": "Metafont", "code": ["message \"Hello world!\"; end"] },
+  {
+    "name": "Microsoft Small Basic",
+    "code": ["TextWindow.WriteLine(\"Hello world!\")"]
+  },
+  { "name": "min", "code": ["\"Hello world!\" puts"] },
+  { "name": "Minimal BASIC", "code": ["10 PRINT \"Hello world!\"\n20 END"] },
+  { "name": "MiniScript", "code": ["print \"Hello world!\""] },
+  {
+    "name": "MiniZinc",
+    "code": ["output [\"Hello World\"];", "Hello World\n----------"]
+  },
+  {
+    "name": "MIPS Assembly",
+    "code": [
+      ".data #section for declaring variables\nhello:  .asciiz \"Hello world!\" #asciiz automatically adds the null terminator. If it's .ascii it doesn't have it.\n\n   .text # beginning of code\nmain: # a label, which can be used with jump and branching instructions.\n   la $a0, hello # load the address of hello into $a0\n   li $v0, 4 # set the syscall to print the string at the address $a0\n   syscall # make the system call\n\n   li $v0, 10 # set the syscall to exit\n   syscall # make the system call"
+    ]
+  },
+  {
+    "name": "Miranda",
+    "code": ["main\u00a0:: [sys_message]\nmain = [Stdout \"Hello, world!\\n\"]"]
+  },
+  { "name": "mIRC Scripting Language", "code": ["echo -ag Hello world!"] },
+  { "name": "ML/I", "code": ["Hello world!"] },
+  {
+    "name": "Modula-2",
+    "code": [
+      "MODULE Hello;\nIMPORT InOut;\n\nBEGIN\n  InOut.WriteString('Hello world!');\n  InOut.WriteLn\nEND Hello.",
+      "MODULE Hello;\nIMPORT IO;\n\nBEGIN\n  IO.WrStr('Hello world!'); IO.WrLn;\n\n(* Another way, showing some features of Modula-2 *)\n  IO.WrStr(\"Hello\");  (* either single or double quotes can be used *)\n  IO.WrChar(40C);     (* character whose ASCII code is 40 octal *)\n  IO.WrStr('world!');\n  IO.WrLn();          (* procedure with no arguments: () is optional *)\nEND Hello."
+    ]
+  },
+  {
+    "name": "Modula-3",
+    "code": [
+      "MODULE Goodbye EXPORTS Main;\n\nIMPORT IO;\n\nBEGIN\n  IO.Put(\"Hello world!\\n\");\nEND Goodbye."
+    ]
+  },
+  { "name": "MontiLang", "code": ["|Hello, World!| PRINT ."] },
+  {
+    "name": "Morfa",
+    "code": [
+      "import morfa.io.print;\nfunc main(): void\n{\n    println(\"Hello world!\");\n}"
+    ]
+  },
+  {
+    "name": "Mosaic",
+    "code": [
+      "proc main =\n    println \"Hello, world\"\nend",
+      "println \"Hello, world\""
+    ]
+  },
+  { "name": "MSX Basic", "code": ["10 PRINT \"Hello world!\""] },
+  {
+    "name": "MUF",
+    "code": [": main[ -- ]\nme @ \"Hello world!\" notify\nexit\n;"]
+  },
+  { "name": "MUMPS", "code": ["Write \"Hello world!\",!"] },
+  {
+    "name": "MyDef",
+    "code": [
+      "mydef_run hello.def",
+      "$print Hello world",
+      "module: c\n$print Hello world",
+      "module: python\n$print Hello world",
+      "module: js\n$print \"Hello world\"",
+      "module: go\n$print Hello world"
+    ]
+  },
+  {
+    "name": "MyrtleScript",
+    "code": [
+      "script HelloWorld {\n    func main returns: int {\n        print(\"Hello World!\")\n    }\n}"
+    ]
+  },
+  { "name": "MySQL", "code": ["SELECT 'Hello world!';"] },
+  { "name": "Mythryl", "code": ["print \"Hello world!\";"] },
+  { "name": "N/t/roff", "code": ["Hello world!"] },
+  { "name": "Nanoquery", "code": ["println \"Hello world!\""] },
+  { "name": "Neat", "code": ["void main() writeln \"Hello world!\";"] },
+  { "name": "Neko", "code": ["$print(\"Hello world!\");"] },
+  {
+    "name": "Nemerle",
+    "code": [
+      "class Hello\n{\n  static Main ()\u00a0: void\n  {\n    System.Console.WriteLine (\"Hello world!\");\n  }\n}",
+      "System.Console.WriteLine(\"Hello world!\");"
+    ]
+  },
+  { "name": "NetRexx", "code": ["say  'Hello world!'"] },
+  {
+    "name": "Never",
+    "code": [
+      "func main() -> int {\n    prints(\"Hello world!\\n\");\n    0\n}",
+      "prompt$ never -f hello.nev\nHello world!"
+    ]
+  },
+  { "name": "newLISP", "code": ["(println \"Hello world!\")"] },
+  { "name": "Nickle", "code": ["printf(\"Hello world!\\n\")"] },
+  {
+    "name": "Nim",
+    "code": ["echo(\"Hello world!\")", "stdout.writeLine(\"Hello World!\")"]
+  },
+  { "name": "Nit", "code": ["print \"Hello world!\""] },
+  { "name": "Nix", "code": ["\"Hello world!\""] },
+  {
+    "name": "NLP++",
+    "code": ["@CODE\n\"output.txt\" << \"Hello world!\";\n@@CODE"]
+  },
+  { "name": "Nom", "code": ["begin { add 'hello world'; print; quit; }"] },
+  {
+    "name": "NS-HUBASIC",
+    "code": ["10\u00a0? \"HELLO WORLD!\"", "10 PRINT \"HELLO WORLD!\""]
+  },
+  { "name": "Nu", "code": ["print \"Hello world!\""] },
+  {
+    "name": "Nutt",
+    "code": [
+      "module hello_world\nimports native.io.output.say\n\nsay(\"Hello, world!\")\n\nend"
+    ]
+  },
+  {
+    "name": "Nyquist",
+    "code": [
+      "(format t \"Hello world!\")",
+      "(print \"Hello world!\")",
+      "print \"Hello World!\"",
+      "exec format(t, \"Hello World!\")"
+    ]
+  },
+  {
+    "name": "Oberon-2",
+    "code": [
+      "MODULE Goodbye;\nIMPORT Out;\n  PROCEDURE World*;\n  BEGIN\n    Out.String(\"Hello world!\");Out.Ln\n  END World;\nBEGIN\n  World;\nEND Goodbye."
+    ]
+  },
+  {
+    "name": "Objeck",
+    "code": [
+      "class Hello {\n  function\u00a0: Main(args\u00a0: String[]) ~ Nil {\n    \"Hello world!\"->PrintLine();\n  }\n}"
+    ]
+  },
+  {
+    "name": "ObjectIcon",
+    "code": [
+      "import io\n\nprocedure main ()\n  io.write (\"Hello world!\")\nend",
+      "$ oiscript hello-OI.icn\nHello world!"
+    ]
+  },
+  {
+    "name": "Objective-C",
+    "code": [
+      "#import <Foundation/Foundation.h>\n\nint main() {\n    @autoreleasepool {\n        NSLog(@\"Hello, World!\");\n    }\n}",
+      "#import <Foundation/Foundation.h>\n\nint main() {\n    @autoreleasepool {\n        NSFileHandle *standardOutput = [NSFileHandle fileHandleWithStandardOutput];\n        NSString *message = @\"Hello, World!\\n\";\n        [standardOutput writeData:[message dataUsingEncoding:NSUTF8StringEncoding]];\n    }\n}",
+      "#import <Foundation/Foundation.h>\n\nint main() {\n    @autoreleasepool {\n        NSString *message = @\"Hello, World!\\n\";\n        printf(\"%s\", message.UTF8String);\n    }\n}"
+    ]
+  },
+  { "name": "OCaml", "code": ["print_endline \"Hello world!\""] },
+  {
+    "name": "Occam",
+    "code": [
+      "#USE \"course.lib\"\nPROC main (CHAN BYTE screen!)\n  out.string(\"Hello world!*c*n\", 0, screen)\n:"
+    ]
+  },
+  {
+    "name": "Octave",
+    "code": ["disp(\"Hello world!\");", "printf(\"Hello world!\");"]
+  },
+  {
+    "name": "Odin",
+    "code": [
+      "package main\nimport \"core:fmt\"\n\nmain\u00a0:: proc() {\n  fmt.println(\"Hellope!\");\n}"
+    ]
+  },
+  { "name": "Oforth", "code": ["\"Hello world!\" ."] },
+  { "name": "Ol", "code": ["(print \"Hello world!\")"] },
+  { "name": "Onyx", "code": ["`Hello world!\\n' print flush"] },
+  {
+    "name": "Onyx (wasm)",
+    "code": [
+      "use core {printf}\nmain\u00a0:: () {\n    printf(\"Hello world!\");\n}",
+      "Hello world!"
+    ]
+  },
+  {
+    "name": "OOC",
+    "code": [
+      "main: func {\n  \"Hello world!\" println()\n}",
+      "main: func {\n  println(\"Hello world!\")\n}"
+    ]
+  },
+  { "name": "ooRexx", "code": ["/* Rexx */\nsay 'Hello world!'"] },
+  {
+    "name": "OpenLisp",
+    "code": [
+      "#!/openlisp/uxlisp -shell\n(format t \"Hello world!~%\")\n(print \"Hello world!\")"
+    ]
+  },
+  {
+    "name": "Openscad",
+    "code": [
+      "echo(\"Hello world!\");  // writes to the console\ntext(\"Hello world!\");  // creates 2D text in the object space\nlinear_extrude(height=10) text(\"Hello world!\"); // creates 3D text in the object space"
+    ]
+  },
+  {
+    "name": "OPL",
+    "code": ["PROC main:\n    PRINT \"Hello, world!\"\n    GET\nENDP"]
+  },
+  {
+    "name": "Owl Lisp",
+    "code": ["(print \"Hello world!\")", "$ ol hello-Owl.scm\nHello world!"]
+  },
+  {
+    "name": "Oxygene",
+    "code": [
+      "namespace HelloWorld;\n \ninterface\n \ntype\n  HelloClass = class\n  public\n    class method Main; \n  end;\n \nimplementation\n \nclass method HelloClass.Main;\nbegin\n  writeLn('Hello world!');\nend;\n \nend.",
+      "Hello world!"
+    ]
+  },
+  { "name": "OxygenBasic", "code": ["print \"Hello world!\""] },
+  { "name": "Oz", "code": ["{Show \"Hello world!\"}"] },
+  { "name": "PARI/GP", "code": ["print(\"Hello world!\")"] },
+  {
+    "name": "Pascal",
+    "code": ["program byeworld;\nbegin\n writeln('Hello world!');\nend."]
+  },
+  {
+    "name": "PascalABC.NET",
+    "code": [
+      "// Hello world/Text. Nigel Galloway: January 25th., 2023\nbegin\n  System.Console.WriteLine('Hello World!');\nend.",
+      "program HelloWorld;\nbegin\n  writeln('Hello World!');\nend.",
+      "##\nprintln('Hello World!');",
+      "Hello World!"
+    ]
+  },
+  { "name": "PASM", "code": ["print \"Hello world!\\n\"\nend"] },
+  {
+    "name": "PDP-1 Assembly",
+    "code": [
+      "hello   \n/ above: title line - was punched in human readable letters on paper tape\n/ below: location specifier - told assembler what address to assemble to\n100/\nlup,\tlac i ptr\t\t/ load ac from address stored in pointer\n\tcli\t\t\t/ clear io register\nlu2,\trcl 6s\t\t\t/ rotate combined ac + io reg 6 bits to the left\n\t\t\t\t/ left 6 bits in ac move into right 6 bits of io reg\n\ttyo\t\t\t/ type out character in 6 right-most bits of io reg\n\tsza\t\t\t/ skip next instr if accumulator is zero\n\tjmp lu2\t\t\t/ otherwise do next character in current word\n\tidx ptr\t\t\t/ increment pointer to next word in message\n\tsas end\t\t\t/ skip next instr if pointer passes the end of message\n\tjmp lup\t\t\t/ otherwise do next word in message\n\thlt\t\t\t/ halt machine\nptr,\tmsg\t\t\t/ pointer to current word in message\nmsg,\ttext \"hello, world\"\t/ 3 6-bit fiodec chars packed into each 18-bit word\nend,\t.         \t\t/ sentinel for end of message\nstart 100\t\t\t/ tells assembler where program starts"
+    ]
+  },
+  {
+    "name": "PDP-11 Assembly",
+    "code": [
+      ".globl  start\n\t.text\nstart:\n        mov\t$1,r0               / r0=stream, STDOUT=$1\n\tsys\t4; outtext; outlen  / sys 4 is write\n\tsys\t1                   / sys 1 is exit\n\trts\tpc                  / in case exit returns\n\n\t.data\nouttext: <Hello world!\\n>\noutlen = . - outtext"
+    ]
+  },
+  {
+    "name": "Pebble",
+    "code": [
+      ";Hello world example program\n;for x86 DOS\n;compile with Pebble\n\n;compiled com program is 51 bytes\n\nprogram examples\\hello\n\nbegin\n\n\techo \"Hello, world!\"\n\tpause\n\tkill\n\nend"
+    ]
+  },
+  {
+    "name": "PepsiScript",
+    "code": [
+      "#include default-libraries\n\n#author Childishbeat\n\nclass Hello world/Text:\nfunction Hello world/Text:\n\nprint \"Hello world!\"\n\nend"
+    ]
+  },
+  {
+    "name": "Perl",
+    "code": [
+      "print \"Hello world!\\n\";",
+      "use feature 'say';\nsay 'Hello world!';",
+      "use 5.010;\nsay 'Hello world!';"
+    ]
+  },
+  {
+    "name": "Peylang",
+    "code": ["chaap 'Hello world!';", "$ peyman hello.pey\nHello world!"]
+  },
+  {
+    "name": "Pharo",
+    "code": [
+      "\"Comments are in double quotes\"\n\"Sending message printString to 'Hello World' string\"\n\n'Hello World' printString"
+    ]
+  },
+  { "name": "Phix", "code": ["puts(1,\"Hello world!\")"] },
+  {
+    "name": "PHL",
+    "code": [
+      "module helloworld;\nextern printf;\n\n@Integer main [\n    printf(\"Hello world!\");\n    return 0;\n]"
+    ]
+  },
+  {
+    "name": "PHP",
+    "code": ["<?php\necho \"Hello world!\\n\";\n?>", "Hello world!"]
+  },
+  { "name": "Picat", "code": ["println(\"Hello, world!\")"] },
+  { "name": "PicoLisp", "code": ["(prinl \"Hello world!\")"] },
+  {
+    "name": "Pict",
+    "code": [
+      "(prNL \"Hello World!\");",
+      "new done: ^[]\nrun ( prNL![\"Hello World!\" (rchan done)]\n    | done?_ = () )"
+    ]
+  },
+  {
+    "name": "Pikachu",
+    "code": [
+      "pikachu pika pikachu pika pika pi pi pika pikachu pika pikachu pi pikachu pi pikachu pi pika pi pikachu pikachu pi pi pika pika pikachu pika pikachu pikachu pi pika pi pika pika pi pikachu pikachu pi pikachu pi pika pikachu pi pikachu pika pikachu pi pikachu pikachu pi pikachu pika pika pikachu pi pikachu pi pi pikachu pikachu pika pikachu pi pika pi pi pika pika pikachu pikachu pi pi pikachu pi pikachu\npikachu pikachu pi pikachu\npikachu pika pika pikachu pika pikachu pikachu pika pika pikachu pikachu pi pi pikachu pika pikachu pika pika pi pika pikachu pikachu pi pika pika pikachu pi pika pi pika pi pikachu pi pikachu pika pika pi pi pika pi pika pika pikachu pikachu pika pikachu pikachu pika pi pikachu pika pi pikachu pi pika pika pi pikachu pika pi pika pikachu pi pi pikachu pika pika pi pika pi pikachu\npikachu pikachu pi pikachu\npikachu pika pi pika pika pikachu pika pikachu pi pikachu pi pi pika pi pikachu pika pi pi pika pikachu pi pikachu pi pi pikachu pikachu pika pikachu pikachu pika pi pikachu pi pika pikachu pi pikachu pika pika pikachu pika pi pi pikachu pikachu pika pika pikachu pi pika pikachu pikachu pi pika pikachu pikachu pika pi pi pikachu pikachu pi pikachu pi pikachu pi pikachu pi pika pikachu pi pikachu pika pikachu pi pika pi pikachu\npi pika\npikachu pikachu pi pikachu\npika pi\npikachu pikachu pi pikachu\npikachu pi pikachu pi pi pikachu pi pikachu pika pikachu pikachu pi pikachu pikachu pika pi pi pika pikachu pika pikachu pi pi pikachu pika pi pi pikachu pika pika pi pika pika pikachu pika pikachu pi pi pika pikachu pika pi pikachu pikachu pi pikachu pika pikachu pikachu pika pi pi pikachu pikachu pi pika pikachu pi pikachu pika pikachu pikachu pika pi pikachu pikachu pika pikachu pi pikachu pika pika pi pikachu pi pika pi pikachu pikachu pi pikachu\npi pika\npikachu pikachu pi pikachu\npikachu pikachu pi pika pikachu pi pika pika pi pi pika pi pikachu pi pika pi pika pi pika pikachu pika pi pi pikachu pi pikachu pi pika pi pika pika pikachu pi pikachu\npikachu pikachu pi pikachu\npikachu pi pikachu pika pikachu pi pika pi pikachu pikachu pika pika pi pi pikachu pi pika pi pikachu pi pika pikachu pi pika pi pi pikachu pikachu pika pika pikachu pikachu pi pi pikachu pi pikachu pi pikachu pi pi pikachu pikachu pi pikachu pi pikachu pi pika pika pikachu pikachu pika pi pika pikachu pi pikachu pi pi pika pikachu pika pi pikachu pi pika pi pi pikachu pikachu pika pika pikachu pika pika pikachu pi pika pi pika pikachu pi pika pikachu pika pi pika pikachu\npikachu pikachu pika pikachu\npikachu pikachu pika pikachu\npi pi pikachu pi pikachu pika pika pi pikachu pika pika pi pi pika pika pikachu pi pi pikachu pi pika pi pika pikachu pi pikachu pi pikachu pikachu pi pi pika pika pi pika pika pi pika pikachu pikachu pi pikachu pika pi pi pika pi pi pikachu pikachu pika pi pi pika pika pi pika pikachu pi pikachu pi pi pika pi pika pika pikachu pika pi pika pikachu pi pikachu pikachu pi pi pika pi pika pika pikachu pikachu pi pikachu\npikachu pikachu pi pikachu\npikachu pi pikachu pikachu pika pikachu pikachu pika pika pikachu pikachu pika pikachu pi pika pikachu pika pika pi pikachu pi pi pika pi pi pikachu pika pika pikachu pikachu pika pikachu pikachu pi pika pi pi pikachu pikachu pika pi pi pikachu pikachu pika pikachu pika pi pikachu pi pika pi pika pikachu pika pi pikachu pi pikachu pikachu pi pika pikachu pi pikachu pikachu pi pika pi pikachu pikachu pi pikachu pika pika pi pi pikachu\npikachu pi pi pika pi pi pikachu pika pikachu pikachu pika pika pi pi pika pikachu pi pikachu pi pi pika pi pika pi pi pika pikachu pi pika pi pikachu pika pikachu pika pi pi pika pi pi pikachu pi pikachu pikachu pika pi pikachu pi pi pika pi pikachu pi pi pika pi pi pikachu pika pikachu pika pikachu pika pi pikachu pikachu pi pi pika pika pikachu\npikachu pikachu pi pikachu\npikachu pikachu pika pikachu"
+    ]
+  },
+  {
+    "name": "Pike",
+    "code": ["int main(){\n   write(\"Hello world!\\n\");\n}"]
+  },
+  { "name": "PILOT", "code": ["T:Hello world!"] },
+  {
+    "name": "PIR",
+    "code": [".sub hello_world_text :main\n\tprint \"Hello world!\\n\"\n.end"]
+  },
+  { "name": "Pixilang", "code": ["fputs(\"Hello world!\\n\")"] },
+  {
+    "name": "PL/I",
+    "code": [
+      "goodbye:proc options(main);\n     put list('Hello world!');\nend goodbye;"
+    ]
+  },
+  {
+    "name": "PL/M",
+    "code": [
+      "100H:\n   /* CP/M BDOS SYSTEM CALL */\n   BDOS: PROCEDURE( FN, ARG ); DECLARE FN BYTE, ARG ADDRESS; GOTO 5; END;\n   /* PRINT A $ TERMINATED STRING */\n   PRINT$STRING: PROCEDURE( S ); DECLARE S ADDRESS; CALL BDOS( 9, S ); END;\n   /* HELLO, WORLD! IN MIXED CASE */\n   DECLARE HELLO$WORLD ( 14 ) BYTE\n           INITIAL( 'H', 65H, 6CH, 6CH, 6FH, ',', ' '\n                  , 'W', 6FH, 72H, 6CH, 64H, 21H, '$'\n                  );\n   CALL PRINT$STRING( .HELLO$WORLD );\nEOF"
+    ]
+  },
+  {
+    "name": "PL/SQL",
+    "code": [
+      "set serveroutput on\n\nBEGIN\n  DBMS_OUTPUT.PUT_LINE('Hello world!');\nEND;\n/",
+      "SQL> set serveroutput on\nSQL> \nSQL> BEGIN\n  2    DBMS_OUTPUT.PUT_LINE('Hello world!');\n  3  END;\n  4  /\nHello world!                                                                    \n\nPL/SQL procedure successfully completed."
+    ]
+  },
+  {
+    "name": "Plain English",
+    "code": [
+      "\\This prints Hello World within the CAL-4700 IDE.\n\\...and backslashes are comments!\nTo run:\nStart up.\nWrite \"Hello World!\" to the console.\nWait for the escape key.\nShut down."
+    ]
+  },
+  {
+    "name": "Plan",
+    "code": [
+      "#STEER         LIST,BINARY\n#PROGRAM       HLWD\n#LOWER\nMSG1A          11HHELLO WORLD\nMSG1B          11/MSG1A\n#PROGRAM\n#ENTRY         0\n      DISTY    MSG1B\n      SUSWT    2HHH\n#END\n#FINISH\n#STOP"
+    ]
+  },
+  { "name": "Pointless", "code": ["output = println(\"Hello world!\")"] },
+  {
+    "name": "Pony",
+    "code": [
+      "actor Main\n  new create(env: Env) =>\n    env.out.print(\"Hello world!\")"
+    ]
+  },
+  { "name": "Pop11", "code": ["printf('Hello world!\\n');"] },
+  {
+    "name": "Portugol",
+    "code": [
+      "programa {\n// funcao defines a new function\n// inicio is the entry point of the program, like main in C\n    funcao inicio() {\n        // escreva is used to print stuff to the screen\n        escreva(\"Hello, world!\\n\") // no ';' needed\n    }\n}"
+    ]
+  },
+  {
+    "name": "PostScript",
+    "code": [
+      "%!PS\n/Helvetica 20 selectfont\n70 700 moveto\n(Hello world!) show\nshowpage",
+      "(Hello world!) ==",
+      "(Hello world!) =",
+      "(Hello world!) print",
+      "%!PS\n/Helvetica 20 selectfont\n70 700 moveto\n(Hello world!) dup dup dup\n= print ==\u00a0% prints three times to the console\nshow\u00a0% prints to document\n1 0 div\u00a0% provokes error message\nshowpage"
+    ]
+  },
+  { "name": "Potion", "code": ["\"Hello world!\\n\" print"] },
+  {
+    "name": "PowerBASIC",
+    "code": [
+      "#COMPILE EXE\n#COMPILER PBCC 6\n\nFUNCTION PBMAIN () AS LONG\n  CON.PRINT \"Hello world!\"\n  CON.WAITKEY$\nEND FUNCTION"
+    ]
+  },
+  { "name": "PowerShell", "code": ["'Hello world!'"] },
+  { "name": "Processing", "code": ["println(\"Hello world!\");"] },
+  { "name": "ProDOS", "code": ["printline Hello world!"] },
+  { "name": "Programming Language", "code": ["print(Hello world!)"] },
+  { "name": "ProgressBASIC", "code": ["10 PRINT \"Hello world\""] },
+  { "name": "Prolog", "code": [":- write('Hello world!'), nl."] },
+  {
+    "name": "PROMAL",
+    "code": [
+      "program hello\ninclude library\nbegin\noutput \"Hello world!\"\nend"
+    ]
+  },
+  {
+    "name": "PSQL",
+    "code": [
+      "EXECUTE BLOCK\n   RETURNS(S VARCHAR(40))\n AS\n BEGIN\n   S = 'Hello world!';\n   SUSPEND;\n END"
+    ]
+  },
+  {
+    "name": "Pure",
+    "code": ["using system;\n\nputs \"Hello world!\\n\"\u00a0;"]
+  },
+  {
+    "name": "PureBasic",
+    "code": [
+      "OpenConsole()\nPrintN(\"Hello world!\")\nInput()\u00a0; Wait for enter",
+      "Debug(\"Hello world!\")"
+    ]
+  },
+  {
+    "name": "Python",
+    "code": [
+      "print \"Hello world!\"",
+      "import sys\nsys.stdout.write(\"Hello world!\\n\")",
+      "print(\"Hello world!\")",
+      "import __hello__",
+      "import __phello__",
+      "import __phello__.spam"
+    ]
+  },
+  { "name": "QB64", "code": ["PRINT \"Hello world!\""] },
+  { "name": "Quackery", "code": ["say \"Hello world!\""] },
+  { "name": "Quill", "code": ["\"Hello world!\" print"] },
+  { "name": "Quite BASIC", "code": ["10 print \"Hello world!\""] },
+  {
+    "name": "R",
+    "code": [
+      "cat(\"Hello world!\\n\")",
+      "message(\"Hello world!\")",
+      "print(\"Hello world!\")"
+    ]
+  },
+  {
+    "name": "Ra",
+    "code": [
+      "class HelloWorld\n\t**Prints \"Hello world!\"**\n\n\ton start\n\n\t\tprint \"Hello world!\""
+    ]
+  },
+  { "name": "Racket", "code": ["(printf \"Hello world!\\n\")"] },
+  {
+    "name": "Raku",
+    "code": ["say 'Hello world!';", "\"Hello, World!\".say();"]
+  },
+  { "name": "Raven", "code": ["'Hello world!' print"] },
+  {
+    "name": "RATFOR",
+    "code": [
+      "program hello\n\nwrite(*,101)\"Hello World\"\n101 format(A)\n\nend"
+    ]
+  },
+  { "name": "RASEL", "code": ["A\"!dlroW ,olleH\">:?@,Hj"] },
+  {
+    "name": "REALbasic",
+    "code": [
+      "Function Run(args() as String) As Integer\n  Print \"Hello world!\"\n  Quit\nEnd Function"
+    ]
+  },
+  { "name": "REBOL", "code": ["print \"Hello world!\""] },
+  { "name": "RED", "code": ["print \"Hello world!\""] },
+  {
+    "name": "Refal",
+    "code": ["$ENTRY Go {\n    = <Prout 'Hello, world!'>;\n};"]
+  },
+  { "name": "Relation", "code": ["' Hello world!"] },
+  {
+    "name": "ReScript",
+    "code": [
+      "Js.log(\"Hello world!\")",
+      "$ bsc hello.res > hello.bs.js\n$ node hello.bs.js\nHello world!"
+    ]
+  },
+  { "name": "Retro", "code": ["'Hello_world! s:put nl"] },
+  {
+    "name": "REXX",
+    "code": [
+      "/*REXX program to show a line of text.  */\nsay 'Hello world!'",
+      "/*REXX program to show a line of text.  */\nyyy = 'Hello world!'\nsay yyy",
+      "/*REXX program to show a line of text.  */\n\ncall lineout ,\"Hello world!\""
+    ]
+  },
+  { "name": "Rhovas", "code": ["print(\"Hello world!\");"] },
+  { "name": "Ring", "code": ["See \"Hello world!\""] },
+  {
+    "name": "RISC-V Assembly",
+    "code": [
+      ".data\nhello:\n.string \"Hello World!\\n\\0\"\n.text\nmain:\nla a0, hello\nli a7, 4\necall\nli a7, 10\necall"
+    ]
+  },
+  {
+    "name": "Roc",
+    "code": [
+      "app \"hello\"\n    packages { pf: \"https://github.com/roc-lang/basic-cli/releases/download/0.1.1/zAoiC9xtQPHywYk350_b7ust04BmWLW00sjb9ZPtSQk.tar.br\" }\n    imports [pf.Stdout]\n    provides [main] to pf\n\nmain =\n    Stdout.line \"I'm a Roc application!\""
+    ]
+  },
+  { "name": "Rockstar", "code": ["Shout \"Hello world!\""] },
+  { "name": "RPG", "code": [] },
+  {
+    "name": "RPL",
+    "code": [
+      "\u226a \"Hello world!\" 1 DISP \n   1 FREEZE                 @ remove this line on HP-28 models\n\u226b 'TASK' STO"
+    ]
+  },
+  {
+    "name": "RTL/2",
+    "code": [
+      "TITLE Goodbye World;\n\nLET NL=10;\n\nEXT PROC(REF ARRAY BYTE) TWRT;\n\nENT PROC RRJOB()INT;\n\n    TWRT(\"Hello world!#NL#\");\n    RETURN(1);\n\nENDPROC;"
+    ]
+  },
+  {
+    "name": "Ruby",
+    "code": [
+      "puts \"Hello world!\"",
+      "$stdout.puts \"Hello world!\"",
+      "STDOUT.write \"Hello world!\\n\"",
+      "$>.puts \"Hello world!\"",
+      "$>.write \"Hello world!\\n\""
+    ]
+  },
+  { "name": "Run BASIC", "code": ["print \"Hello world!\""] },
+  {
+    "name": "Rust",
+    "code": [
+      "fn main() {\n   print!(\"Hello world!\");\n}",
+      "fn main() {\n   println!(\"Hello world!\");\n}"
+    ]
+  },
+  {
+    "name": "Salmon",
+    "code": [
+      "\"Hello world!\"!",
+      "print(\"Hello world!\\n\");",
+      "standard_output.print(\"Hello world!\\n\");"
+    ]
+  },
+  {
+    "name": "SAS",
+    "code": [
+      "/* Using a data step. Will print the string in the log window */\ndata _null_;\nput \"Hello world!\";\nrun;"
+    ]
+  },
+  { "name": "SASL", "code": ["'Hello World!\",nl"] },
+  {
+    "name": "Sather",
+    "code": [
+      "class GOODBYE_WORLD is\n main is \n  #OUT+\"Hello world!\\n\"; \n end; \nend;"
+    ]
+  },
+  {
+    "name": "Scala",
+    "code": [
+      "println(\"Hello world!\")",
+      "System.out.println(\"Hello world!\")",
+      "println(\"Hello world!\")",
+      "Console.withErr(Console.out) { Console.err.println(\"This goes to default _out_\") }",
+      "Console.err.println (\"Err not deviated\")\n  Console.setErr(Console.out)\n  Console.err.println (\"Err deviated\")\n  Console.setErr(Console.err) // Reset to normal"
+    ]
+  },
+  {
+    "name": "Scheme",
+    "code": [
+      "\"Hello world!\"",
+      "(display \"Hello world!\")\n(newline)",
+      "(import (rnrs base (6))\n        (rnrs io simple (6)))\n(display \"Hello world!\")\n(newline)",
+      "(import (scheme base)\n        (scheme write))\n(display \"Hello world!\")\n(newline)"
+    ]
+  },
+  { "name": "Scilab", "code": ["disp(\"Hello world!\");"] },
+  {
+    "name": "ScratchScript",
+    "code": ["print \"Hello world!\"", "print \"Hello world!\"\ndelayOnClick"]
+  },
+  { "name": "sed", "code": ["i\\\nHello world!\nq"] },
+  {
+    "name": "Seed7",
+    "code": [
+      "$ include \"seed7_05.s7i\";\n\nconst proc: main is func\n  begin\n    writeln(\"Hello world!\");\n  end func;"
+    ]
+  },
+  { "name": "Self", "code": ["'Hello world!' printLine."] },
+  { "name": "SenseTalk", "code": ["put \"Hello world!\""] },
+  {
+    "name": "Set lang",
+    "code": [
+      "set\u00a0! H\nset\u00a0! E\nset\u00a0! L\nset\u00a0! L\nset\u00a0! O\nset\u00a0! 32\nset\u00a0! W\nset\u00a0! O\nset\u00a0! R\nset\u00a0! L\nset\u00a0! D\nset\u00a0! 33"
+    ]
+  },
+  { "name": "SETL", "code": ["print(\"Hello world!\");"] },
+  { "name": "SETL4", "code": ["out(\"Hello world!\");end"] },
+  { "name": "Shen", "code": ["(output \"Hello world!~%\")"] },
+  { "name": "Shiny", "code": ["say 'Hello world!'"] },
+  { "name": "Sidef", "code": ["\u201eHello world!\u201d.say;"] },
+  { "name": "SimpleCode", "code": ["dtxt\nHello world!"] },
+  {
+    "name": "SIMPOL",
+    "code": ["function main()\nend function \"Hello world!{d}{a}\""]
+  },
+  {
+    "name": "Simula",
+    "code": ["BEGIN\n   OUTTEXT(\"Hello world!\");\n   OUTIMAGE\nEND"]
+  },
+  {
+    "name": "Sing",
+    "code": [
+      "requires \"sio\";\n\npublic fn singmain(argv [*]string) i32\n{\n    sio.print(\"hello world\u00a0!\\r\\n\");\n    return(0);\n}"
+    ]
+  },
+  {
+    "name": "Sisal",
+    "code": [
+      "define main\n\n% Sisal doesn't yet have a string built-in.\n% Let's define one as an array of characters.\n\ntype string = array[character];\n\nfunction main(returns string)\n  \"Hello world!\"\nend function"
+    ]
+  },
+  {
+    "name": "Skew",
+    "code": ["@entry\ndef main {\n  dynamic.console.log(\"Hello world!\")\n}"]
+  },
+  {
+    "name": "SkookumScript",
+    "code": ["print(\"Hello world!\")", "\"Hello world!\""]
+  },
+  { "name": "Slate", "code": ["inform: 'Hello world!'."] },
+  { "name": "Slope", "code": ["(write \"Hello, world!\")"] },
+  { "name": "SmallBASIC", "code": ["PRINT \"Hello world!\""] },
+  {
+    "name": "Smalltalk",
+    "code": ["Transcript show: 'Hello world!'; cr.", "'Hello world!' printNl."]
+  },
+  { "name": "smart BASIC", "code": ["PRINT \"Hello world!\""] },
+  { "name": "SmileBASIC", "code": ["PRINT \"Hello world!\""] },
+  { "name": "SNOBOL4", "code": ["OUTPUT = \"Hello world!\"\nEND"] },
+  {
+    "name": "SNUSP",
+    "code": [
+      "/++++!/===========?\\>++.>+.+++++++..+++\\\n\\+++\\ | /+>+++++++>/ /++++++++++<<.++>./\n$+++/ | \\+++++++++>\\ \\+++++.>.+++.-----\\\n      \\==-<<<<+>+++/ /=.>.+>.--------.-/",
+      "@\\G.@\\o.o.@\\d.--b.@\\y.@\\e.>@\\comma.@\\.<-@\\W.+@\\o.+++r.------l.@\\d.>+.! #\n |   |     \\@------|#  |    \\@@+@@++|+++#-    \\\\               -\n |   \\@@@@=+++++#  |   \\===--------!\\===!\\-----|-------#-------/\n \\@@+@@@+++++#     \\!#+++++++++++++++++++++++#!/"
+    ]
+  },
+  {
+    "name": "Soda",
+    "code": [
+      "class Main\n\n  main (arguments\u00a0: Array [String] )\u00a0: Unit =\n    println (\"Hello world!\")\n\nend"
+    ]
+  },
+  {
+    "name": "SoneKing Assembly",
+    "code": [
+      "extern print\n\ndv Msg Goodbye,World!\n\nmov eax Msg\npush\ncall print\npop"
+    ]
+  },
+  {
+    "name": "SPARC Assembly",
+    "code": [
+      ".section\t\".text\"\n\t.global\t\t_start\n_start:\n\tmov\t4,%g1\t\t\t! 4 is SYS_write\n\tmov\t1,%o0\t\t\t! 1 is stdout\n\tset\t.msg,%o1\t\t! pointer to buffer\n\tmov\t(.msgend-.msg),%o2\t! length\n\tta\t8\n\n\tmov\t1,%g1\t\t\t! 1 is SYS_exit\n\tclr\t%o0\t\t\t! return status is 0\n\tta\t8\n\n.msg:\n\t.ascii\t\"Hello world!\\n\"\n.msgend:"
+    ]
+  },
+  { "name": "Sparkling", "code": ["print(\"Hello world!\");"] },
+  { "name": "SPL", "code": ["#.output(\"Hello world!\")"] },
+  {
+    "name": "SQL",
+    "code": [
+      "select 'Hello world!' text from dual;",
+      "SQL>select 'Hello world!' text from dual;\nTEXT\n------------\nHello world!"
+    ]
+  },
+  {
+    "name": "SQL PL",
+    "code": [
+      "SELECT 'Hello world!' AS text FROM sysibm.sysdummy1;",
+      "db2 -t\ndb2 => SELECT 'Hello world!' AS text FROM sysibm.sysdummy1;\n\nTEXT        \n------------\nHello world!\n\n  1 record(s) selected.",
+      "SET SERVEROUTPUT ON;\n\nCALL DBMS_OUTPUT.PUT_LINE('Hello world!');",
+      "db2 -t\ndb2 => SET SERVEROUTPUT ON\nDB20000I  The SET SERVEROUTPUT command completed successfully.\ndb2 => CALL DBMS_OUTPUT.PUT_LINE('Hello world!')\n\n  Return Status = 0\n\nHello world!"
+    ]
+  },
+  { "name": "Standard ML", "code": ["print \"Hello world!\\n\""] },
+  { "name": "Stata", "code": ["display \"Hello world!\""] },
+  { "name": "Stax", "code": ["`dx/&\\p4`A+"] },
+  { "name": "Suneido", "code": ["Print(\"Hello world!\")"] },
+  { "name": "Swahili", "code": ["andika(\"Hello world!\")"] },
+  {
+    "name": "Swift",
+    "code": ["print(\"Hello world!\")", "println(\"Hello world!\")"]
+  },
+  { "name": "Symsyn", "code": ["'hello world' []"] },
+  { "name": "TailDot", "code": ["c,x,Hello World!,v,x"] },
+  {
+    "name": "Tailspin",
+    "code": ["'Hello World' -> !OUT::write", "'Hello World'\u00a0!"]
+  },
+  {
+    "name": "TAV",
+    "code": [
+      "\\( The famous example \\)\n main (parms):+\n   print \"Greetings from TAV\""
+    ]
+  },
+  {
+    "name": "Tcl",
+    "code": ["puts stdout {Hello world!}", "puts $fileID {Hello world!}"]
+  },
+  { "name": "Teco", "code": ["^AHello world!^A$$"] },
+  { "name": "Tern", "code": ["println(\"Hello world!\");"] },
+  {
+    "name": "Terra",
+    "code": [
+      "C = terralib.includec(\"stdio.h\")\n\nterra hello(argc\u00a0: int, argv\u00a0: &rawstring)\n  C.printf(\"Hello world!\\n\")\n  return 0\nend"
+    ]
+  },
+  {
+    "name": "Terraform",
+    "code": [
+      "output \"result\" {\n  value = \"Hello world!\"\n}",
+      "$ terraform init\n$ terraform apply\n\nApply complete! Resources: 0 added, 0 changed, 0 destroyed.\n\nOutputs:\n\nresult = Hello world!\n$ terraform output result\nHello world!"
+    ]
+  },
+  { "name": "TestML", "code": ["%TestML 0.1.0\nPrint(\"Hello world!\")"] },
+  { "name": "TI-57", "code": ["0.7745"] },
+  { "name": "TI-83 BASIC", "code": ["Disp \"Hello world!"] },
+  { "name": "TI-89 BASIC", "code": ["Disp \"Hello world!\""] },
+  { "name": "Tiny BASIC", "code": ["10 PRINT \"Hello, World!\"\n20 END"] },
+  { "name": "TMG", "code": ["begin: parse(( = { <Hello, World!> * } ));"] },
+  { "name": "TorqueScript", "code": ["echo(\"Hello world!\");"] },
+  { "name": "TPP", "code": ["Hello world!"] },
+  { "name": "Transact-SQL", "code": ["PRINT \"Hello world!\""] },
+  { "name": "Transd", "code": ["(textout \"Hello, World!\")"] },
+  { "name": "TransFORTH", "code": ["PRINT \" Hello world! \""] },
+  { "name": "Trith", "code": ["\"Hello world!\" print"] },
+  {
+    "name": "True BASIC",
+    "code": [
+      "! In True BASIC all programs run in their own window. So this is almost a graphical version.\nPRINT \"Hello world!\"\nEND"
+    ]
+  },
+  {
+    "name": "TUSCRIPT",
+    "code": ["$$ MODE TUSCRIPT\nPRINT \"Hello world!\"", "Hello world!"]
+  },
+  { "name": "uBasic/4tH", "code": ["Print \"Hello world!\""] },
+  { "name": "Uiua", "code": ["&p\"Hello world!\""] },
+  { "name": "Uniface", "code": ["message \"Hello world!\""] },
+  { "name": "Unison", "code": ["main = '(printLine \"Hello world!\")"] },
+  {
+    "name": "UNIX Shell",
+    "code": [
+      "#!/bin/sh\necho \"Hello world!\"",
+      "#!/bin/csh -f\necho \"Hello world!\\!\""
+    ]
+  },
+  {
+    "name": "Unlambda",
+    "code": ["`r```````````````.G.o.o.d.b.y.e.,. .W.o.r.l.d.!i"]
+  },
+  { "name": "Ursa", "code": ["out \"hello world!\" endl console"] },
+  {
+    "name": "Ursala",
+    "code": [
+      "#show+\n\nmain = -[Hello world!]-",
+      "#import std\n\n#executable ('parameterized','')\n\nmain = <file[contents: -[Hello world!]-]>!"
+    ]
+  },
+  { "name": "Ursalang", "code": ["print(\"hello woods!\")"] },
+  {
+    "name": "\u0b89\u0baf\u0bbf\u0bb0\u0bcd/Uyir",
+    "code": [
+      "\u0bae\u0bc1\u0ba4\u0ba9\u0bcd\u0bae\u0bc8 \u0b8e\u0ba9\u0bcd\u0baa\u0ba4\u0bbf\u0ba9\u0bcd \u0bb5\u0b95\u0bc8 \u0b8e\u0ba3\u0bcd \u0baa\u0ba3\u0bbf {{\n         (\"\u0b89\u0bb2\u0b95\u0ba4\u0bcd\u0ba4\u0bcb\u0bb0\u0bc1\u0b95\u0bcd\u0b95\u0bc1 \u0bb5\u0ba3\u0b95\u0bcd\u0b95\u0bae\u0bcd\") \u0b8e\u0ba9\u0bcd\u0baa\u0ba4\u0bc8 \u0ba4\u0bbf\u0bb0\u0bc8.\u0b87\u0b9f\u0bc1;\n\n         \u0bae\u0bc1\u0ba4\u0ba9\u0bcd\u0bae\u0bc8 = 0;\n}};"
+    ]
+  },
+  {
+    "name": "Uxntal",
+    "code": [
+      "|10 @Console &vector $2 &read $1 &pad $5 &write $1 &error $1\n\n|100\n\n@on-reset ( -> )\n\t;my-string print-text\n\tBRK\n\n@print-text ( str* -- )\n\t&while\n\t\tLDAk .Console/write DEO\n\t\tINC2 LDAk\u00a0?&while\n\tPOP2\n\tJMP2r\n\n@my-string\n\t\"Hello 20 \"World! 0a00",
+      "Hello World!"
+    ]
+  },
+  { "name": "V", "code": ["\"Hello world!\" puts"] },
+  {
+    "name": "Vala",
+    "code": ["void main(){\n\tstdout.printf(\"Hello world!\\n\");\n}"]
+  },
+  {
+    "name": "Vale",
+    "code": [
+      "import stdlib.*;\n\nexported func main() {\n\tprintln(\"Hello world!\");\n}"
+    ]
+  },
+  {
+    "name": "VAX Assembly",
+    "code": [
+      "desc:  .ascid \"Hello World!\"      ;descriptor (len+addr) and text\n.entry hello, ^m<>                ;register save mask\n       pushaq desc                ;address of descriptor\n       calls #1, g^lib$put_output ;call with one argument on stack\n       ret                        ;restore registers, clean stack & return\n.end hello                        ;transfer address for linker"
+    ]
+  },
+  {
+    "name": "VBA",
+    "code": [
+      "Public Sub hello_world_text\n    Debug.Print \"Hello World!\"\nEnd Sub"
+    ]
+  },
+  { "name": "VBScript", "code": ["WScript.Echo \"Hello world!\""] },
+  { "name": "Vedit macro language", "code": ["Message(\"Hello world!\")"] },
+  { "name": "Verbexx", "code": ["@SAY \"Hello world!\";"] },
+  {
+    "name": "Verilog",
+    "code": [
+      "module main;\n  initial begin\n      $display(\"Hello world!\");\n      $finish\u00a0;\n    end\nendmodule"
+    ]
+  },
+  {
+    "name": "VHDL",
+    "code": [
+      "LIBRARY std;\nUSE std.TEXTIO.all;\n\nentity test is\nend entity test;\n\narchitecture beh of test is\nbegin\n  process\n    variable line_out\u00a0: line;\n  begin\n    write(line_out, string'(\"Hello world!\"));\n    writeline(OUTPUT, line_out);\n    wait; -- needed to stop the execution\n  end process;\nend architecture beh;"
+    ]
+  },
+  { "name": "Vim Script", "code": ["echo \"Hello world!\\n\""] },
+  {
+    "name": "Visual Basic",
+    "code": [
+      "Option Explicit\n\nPrivate Declare Function AllocConsole Lib \"kernel32.dll\" () As Long\nPrivate Declare Function FreeConsole Lib \"kernel32.dll\" () As Long\n'needs a reference set to \"Microsoft Scripting Runtime\" (scrrun.dll)\n\nSub Main()\n  Call AllocConsole\n  Dim mFSO As Scripting.FileSystemObject\n  Dim mStdIn As Scripting.TextStream\n  Dim mStdOut As Scripting.TextStream\n  Set mFSO = New Scripting.FileSystemObject\n  Set mStdIn = mFSO.GetStandardStream(StdIn)\n  Set mStdOut = mFSO.GetStandardStream(StdOut)\n  mStdOut.Write \"Hello world!\" & vbNewLine\n  mStdOut.Write \"press enter to quit program.\"\n  mStdIn.Read 1\n  Call FreeConsole\nEnd Sub"
+    ]
+  },
+  {
+    "name": "Visual Basic .NET",
+    "code": [
+      "Imports System\n\nModule HelloWorld\n    Sub Main()\n        Console.WriteLine(\"Hello world!\")\n    End Sub\nEnd Module"
+    ]
+  },
+  {
+    "name": "Viua VM assembly",
+    "code": [
+      ".function: main/0\n    text %1 local \"Hello World!\"\n    print %1 local\n    izero %0 local\n    return\n.end"
+    ]
+  },
+  { "name": "V (Vlang)", "code": ["println('Hello World!')"] },
+  { "name": "VTL-2", "code": ["10\u00a0?=\"Hello world!\""] },
+  { "name": "Waduzitdo", "code": ["T:Hello world!\nS:"] },
+  { "name": "Wart", "code": ["prn \"Hello world!\""] },
+  { "name": "WDTE", "code": ["io.writeln io.stdout 'Hello world!';"] },
+  {
+    "name": "WebAssembly",
+    "code": [
+      "(module $helloworld\n\n   \u00a0;;Import fd_write from WASI, declaring that it takes 4 i32 inputs and returns 1 i32 value\n    (import \"wasi_unstable\" \"fd_write\"\n        (func $fd_write (param i32 i32 i32 i32) (result i32))\n    )\n\n   \u00a0;;Declare initial memory size of 32 bytes\n    (memory 32)\n\n   \u00a0;;Export memory so external functions can see it\n    (export \"memory\" (memory 0))\n \n   \u00a0;;Declare test data starting at address 8\n    (data (i32.const 8) \"Hello world!\\n\")\n \n   \u00a0;;The entry point for WASI is called _start\n    (func $main (export \"_start\")\n        \n       \u00a0;;Write the start address of the string to address 0\n        (i32.store (i32.const 0) (i32.const 8)) \n \n       \u00a0;;Write the length of the string to address 4\n        (i32.store (i32.const 4) (i32.const 13))\n\n       \u00a0;;Call fd_write to print to console\n        (call $fd_write\n            (i32.const 1)\u00a0;;Value of 1 corresponds to stdout\n            (i32.const 0)\u00a0;;The location in memory of the string pointer\n            (i32.const 1)\u00a0;;Number of strings to output\n            (i32.const 24)\u00a0;;Address to write number of bytes written\n        )\n        drop\u00a0;;Ignore return code\n    )\n)"
+    ]
+  },
+  { "name": "Wee Basic", "code": ["print 1 \"Hello world!\"\nend"] },
+  { "name": "Whenever", "code": ["1 print(\"Hello world!\");"] },
+  {
+    "name": "Whiley",
+    "code": [
+      "import whiley.lang.System\n\nmethod main(System.Console console):\n    console.out.println(\"Hello world!\")"
+    ]
+  },
+  { "name": "Whitespace", "code": [] },
+  {
+    "name": "Wisp",
+    "code": [
+      "import\u00a0: scheme base\n         scheme write\ndisplay \"Hello world!\"\nnewline"
+    ]
+  },
+  { "name": "Wolfram Language", "code": ["Print[\"Hello world!\"]"] },
+  { "name": "Wren", "code": ["System.print(\"Hello world!\")"] },
+  {
+    "name": "X10",
+    "code": [
+      "class HelloWorld {\n  public static def main(args:Rail[String]):void {\n    if (args.size < 1) {\n        Console.OUT.println(\"Hello world!\");\n        return;\n    }\n  }\n}"
+    ]
+  },
+  {
+    "name": "X86 Assembly",
+    "code": [
+      "section .data\nmsg     db      'Hello world!', 0AH\nlen     equ     $-msg\n\nsection .text\nglobal  _start\n_start: mov     edx, len\n        mov     ecx, msg\n        mov     ebx, 1\n        mov     eax, 4\n        int     80h\n\n        mov     ebx, 0\n        mov     eax, 1\n        int     80h",
+      ".section .text\n\n.globl main\n\nmain:\n\tmovl $4,%eax\t#syscall number 4\n\tmovl $1,%ebx\t#number 1 for stdout\n\tmovl $str,%ecx\t#string pointer\n\tmovl $16,%edx\t#number of bytes\n\tint $0x80\t#syscall interrupt\n\tret\n\n.section .data\nstr: .ascii \"Hello world!\\12\""
+    ]
+  },
+  {
+    "name": "X86-64 Assembly",
+    "code": [
+      "option casemap:none\nif @Platform eq 1\n   option dllimport:<kernel32>\n      ExitProcess   proto :dword\n   option dllimport:none\n      exit          equ ExitProcess\nendif\nprintf              proto :qword, :vararg\nexit                proto :dword\n\n.code\nmain proc\ninvoke printf, CSTR(\"Goodbye, World!\",10)\ninvoke exit, 0\nret\nmain endp\nend",
+      "// No \"main\" used\n// compile with `gcc -nostdlib`\n#define SYS_WRITE   $1\n#define STDOUT      $1\n#define SYS_EXIT    $60\n#define MSGLEN      $14\n\n.global _start\n.text\n\n_start:\n    movq    $message, %rsi          // char *\n    movq    SYS_WRITE, %rax\n    movq    STDOUT, %rdi\n    movq    MSGLEN, %rdx\n    syscall                         // sys_write(message, stdout, 0x14);\n    \n    movq    SYS_EXIT, %rax\n    xorq    %rdi, %rdi              // The exit code.\n    syscall                         // exit(0)\n    \n.data\nmessage:    .ascii \"Hello, world!\\n\"",
+      "; compile with:\n; nasm -f elf64 hello0.asm -o hello0.o\n; ld hello0.o -o hello0 -z noexecstack -no-pie -s\n\nglobal _start\n\nsection .text\n_start:\n .write:\n    mov    rax,    1\n    mov    rdi,    1\n    mov    rsi,    message\n    mov    rdx,    14\n    syscall\n .exit:\n    mov    rax,    60\n    xor    rdi,    rdi\n    syscall\n\nsection .data\nmessage: db \"Hello, World!\", 0x0a",
+      "; compile with:\n; nasm -f elf64 hello1.asm -o hello1.o\n; gcc hello1.o -o hello1 -z noexecstack -no-pie -s\n; or\n; tcc hello1.o -o hello1\n\nglobal main\nextern puts\n\nsection .text\nmain:\n    mov    rdi,    message\n    sub    rsp,    8\n    call   puts\n    add    rsp,    8\n    xor    rax,    rax\n    ret\n\nsection .data\nmessage: db \"Hello, World!\", 0",
+      "global _start\n\nsection .text\n\n_start:\n    mov  rdi, `Hello, W`\n    mov  rax, `orld!\\n\\0\\0`\n    push rax\n    push rdi\n    mov  rax,    1\n    mov  rdi,    1\n    mov  rsi,    rsp\n    mov  rdx,    14\n    syscall\n    pop  rdi\n    pop  rax\n    mov  rax,    60\n    mov  rdi,    0\n    syscall",
+      ";compile with:    fasm hello.asm hello\n;                 chmod 755 hello\n;run with:        ./hello\n\nformat ELF64 executable 3            ;Linux 64 bit executable\nentry _start                         ;label to start execution\n\nsegment executable readable          ;code segment\n_start:\n  .write:\n    mov    rax, 1                   \u00a0; sys_write\n    mov    rdi, 1                   \u00a0; stdout\n    mov    rsi, message             \u00a0; pointer to string to write\n    mov    rdx, endmessage - message\u00a0; length of string\n    syscall                         \u00a0; print the string\n  .exit:\n    mov    rax, 60                  \u00a0; sys_exit\n    xor    rdi, rdi                 \u00a0; exit code 0\n    syscall                         \u00a0; exit program\nsegment readable writable           \u00a0; 'data' segment\nmessage: db \"Hello, World!\"         \u00a0; message to print\n         db 0x0a                    \u00a0; line feed\nendmessage:                         \u00a0; endmessage - message = length"
+    ]
+  },
+  {
+    "name": "XBasic",
+    "code": [
+      "PROGRAM \"hello\"\nVERSION \"0.0003\"\n\nDECLARE FUNCTION Entry()\n\nFUNCTION Entry()\n  PRINT \"Hello World\"\nEND FUNCTION\nEND PROGRAM"
+    ]
+  },
+  {
+    "name": "xEec",
+    "code": [
+      "h#10 h$! h$d h$l h$r h$o h$w h#32  \nh$o h$l h$l h$e h$H >o o$ p jno"
+    ]
+  },
+  { "name": "XL", "code": ["use XL.UI.CONSOLE\nWriteLn \"Hello world!\""] },
+  { "name": "XLISP", "code": ["(DISPLAY \"Hello world!\")\n(NEWLINE)"] },
+  { "name": "XPL0", "code": ["code Text=12;\nText(0, \"Hello world!\n\")"] },
+  { "name": "XPath", "code": ["'Hello world&#xA;'"] },
+  {
+    "name": "XSLT",
+    "code": [
+      "<xsl:text>Hello world!\n</xsl:text>",
+      "<xsl:text>Hello world!&#xA;</xsl:text>"
+    ]
+  },
+  { "name": "Yabasic", "code": ["print \"Hello world!\""] },
+  {
+    "name": "YAMLScript",
+    "code": [
+      "!YS-v0\n\nsay: \"Hello, world!\"\n\n=>: (say \"Hello, world!\")\n\n=>: say(\"Hello, world!\")\n\nsay:\n  =>: \"Hello, world!\"\n\nsay: (\"Hello, \" + \"world!\")\n\nsay: .\"Hello,\" \"world!\"\n\nsay \"Hello,\": \"world!\"\n\nsay \"Hello,\" \"world!\":"
+    ]
+  },
+  { "name": "Yorick", "code": ["write, \"Hello world!\""] },
+  {
+    "name": "Z80 Assembly",
+    "code": [
+      "org\t\t$4000\n\ntxt_output:\tequ\t$bb5a\n\n\t\tpush\thl\n\t\tld\thl,world\n\nprint:\t\tld\ta,(hl)\n\t\tcp\t0\n\t\tjr\tz,end\n\t\tcall\ttxt_output\n\t\tinc\thl\n\t\tjr\tprint\n\nend:\t\tpop\thl\n\t\tret\n\nworld:\t\tdefm\t\"Hello world!\\r\\n\\0\""
+    ]
+  },
+  { "name": "zkl", "code": ["println(\"Hello world!\");"] },
+  {
+    "name": "Zig",
+    "code": [
+      "const std = @import(\"std\");\n\npub fn main() !void {\n    const stdout = std.io.getStdOut();\n\n    try stdout.writeAll(\"Hello world!\\n\");\n}"
+    ]
+  },
+  {
+    "name": "Zoea",
+    "code": ["program: hello_world \n  output: \"Hello  world!\""]
+  },
+  { "name": "Zoea Visual", "code": [] },
+  { "name": "Zoomscript", "code": ["print \"Hello world!\""] },
+  { "name": "ZX Spectrum Basic", "code": ["10 print \"Hello world!\""] }
+]

@@ -1,5 +1,7 @@
 # Hello World data collection
 
+For people on the spectrum.
+
 ## Sources
 
 - [PLDB](https://pldb.io/lists/explorer.html#columns=rank~name~id~tags)
@@ -7,3 +9,4 @@
 - [helloworldcollection](http://helloworldcollection.de)
 - [esolangs](https://esolangs.org/wiki/Hello_world_program_in_esoteric_languages)
 - [rosettacode](https://rosettacode.org/wiki/Category:Programming_Languages)
+- [rosettacode_hello_world](https://rosettacode.org/wiki/Hello_world/)
