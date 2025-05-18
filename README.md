@@ -10,3 +10,11 @@ For people on the spectrum.
 - [esolangs](https://esolangs.org/wiki/Hello_world_program_in_esoteric_languages)
 - [rosettacode](https://rosettacode.org/wiki/Category:Programming_Languages)
 - [rosettacode_hello_world](https://rosettacode.org/wiki/Hello_world/)
+
+## Research for confirmation
+
+- C+++
+- Catrobar
+- LINE entry
+- Mind
+- Piet
