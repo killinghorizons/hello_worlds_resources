@@ -18,3 +18,7 @@ For people on the spectrum.
 - LINE entry
 - Mind
 - Piet
+
+## To Explore
+
+- [codegolf](https://codegolf.stackexchange.com/questions/55422/hello-world)
